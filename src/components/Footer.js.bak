@@ -1,0 +1,31 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
+import { getCurrentUser } from 'aws-amplify/auth';
+
+const Footer = ({ signOut }) => {
+    // async function currentAuthenticatedUser() {
+    //     try {
+    //       const { username, userId, signInDetails } = await getCurrentUser();
+    //       console.log(`The username: ${username}`);
+    //       console.log(`The userId: ${userId}`);
+    //       console.log(`The signInDetails: ${signInDetails}`);
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     currentAuthenticatedUser();
+    // },[]);
+
+    return(
+        <footer className="w-full z-50 px-6 py-4">
+            <div className="w-full justify-between items-center flex">
+                <p>Logged in as <Link to="/account">account</Link></p>
+                <button onClick={signOut}>Sign Out</button>
+            </div>
+        </footer>
+    )
+}
+
+export default Footer;

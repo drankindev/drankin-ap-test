@@ -1,23 +1,36 @@
-import logo from "./logo.svg";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './App.css';
+import './tailwind.generated.css';
 import "@aws-amplify/ui-react/styles.css";
 import {
   withAuthenticator,
-  Button,
-  Heading,
-  Image,
   View,
-  Card,
 } from "@aws-amplify/ui-react";
 
-function App({ signOut }) {
+import Layout from './components/Layout';
+import Home from './components/Home';
+import Profile from './components/Profile';
+import CategoriesListEdit from './components/CategoriesListEdit';
+import NotFound from './components/NotFound';
+import Header from './components/Header';
+
+function App({signOut, user}) {
   return (
-    <View className="App">
-      <Card>
-        <Image src={logo} className="App-logo" alt="logo" />
-        <Heading level={1}>We now have Auth!</Heading>
-      </Card>
-      <Button onClick={signOut}>Sign Out</Button>
+    <>  
+    <View className="App">     
+      <BrowserRouter>
+        <Header signOut={signOut} user={user}/>
+        <Routes>
+          <Route exact path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/profile/:profileId" element={<Profile user={user}/>} />
+            <Route path="/categories" element={<CategoriesListEdit />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>      
     </View>
+    </>
   );
 }
 

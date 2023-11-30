@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "drankinaptest6abd1dd0": {}
+      },
+      "api": {
+        "drankinaptest": {}
+      },
+      "storage": {
+        "s30059c7fc": {}
       }
     }
   }

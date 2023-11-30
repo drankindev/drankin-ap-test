@@ -4,6 +4,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Mono:wght@400;700&display=swap');
 
-h1 {
-    @apply font-bebas text-2xl text-black;
+@layer components {
+    h1 {
+        @apply font-roboto text-2xl text-red-600;
+    }
 }

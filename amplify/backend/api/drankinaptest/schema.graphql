@@ -1,0 +1,32 @@
+type Comment @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  text: String!
+  postID: ID! @index(name: "byPost")
+  profileID: ID! @index(name: "byProfile")
+}
+
+type Profile @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  username: String!
+  Posts: [Post] @hasMany(indexName: "byProfile", fields: ["id"])
+  Comments: [Comment] @hasMany(indexName: "byProfile", fields: ["id"])
+  description: String
+  image: String
+}
+
+type Post @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String!
+  body: String!
+  Categories: [Category] @hasMany(indexName: "byPost", fields: ["id"])
+  profileID: ID! @index(name: "byProfile")
+  Comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
+  image: String
+}
+
+type Category @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  description: String
+  postID: ID! @index(name: "byPost")
+}
