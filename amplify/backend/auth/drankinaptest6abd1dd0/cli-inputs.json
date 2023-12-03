@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "drankinaptest6abd1dd0_identitypool_6abd1dd0",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "dranki6abd1dd0",
     "userPoolName": "drankinaptest6abd1dd0_userpool_6abd1dd0",
     "autoVerifiedAttributes": [
@@ -26,17 +26,21 @@
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
+      "picture",
+      "profile",
       "email"
     ],
     "userpoolClientReadAttributes": [
-      "email"
+      "email",
+      "picture",
+      "profile"
     ],
     "userpoolClientLambdaRole": "dranki6abd1dd0_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
+    "userpoolClientSetAttributes": true,
     "sharedId": "6abd1dd0",
     "resourceName": "drankinaptest6abd1dd0",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "default",
+    "useDefault": "manual",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
@@ -54,6 +58,16 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": []
+    "dependsOn": [],
+    "thirdPartyAuth": false,
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": {},
+    "hostedUI": false,
+    "authProviders": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "permissions": []
   }
 }

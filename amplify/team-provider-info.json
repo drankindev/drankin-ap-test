@@ -9,17 +9,48 @@
       "UnauthRoleName": "amplify-amplify326dc36ee2c74-staging-210251-unauthRole",
       "StackName": "amplify-amplify326dc36ee2c74-staging-210251",
       "StackId": "arn:aws:cloudformation:us-east-1:652418656074:stack/amplify-amplify326dc36ee2c74-staging-210251/a87656c0-8efa-11ee-bcf0-0e84c7a02837",
-      "AmplifyAppId": "d1qmyuohdm9qqv"
+      "AmplifyAppId": "d1qmyuohdm9qqv",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-amplify326dc36ee2c74-staging-210251-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "drankinaptest6abd1dd0": {}
       },
-      "api": {
-        "drankinaptest": {}
-      },
       "storage": {
         "s30059c7fc": {}
+      },
+      "function": {
+        "drankinaptest22c9e886": {
+          "deploymentBucketName": "amplify-amplify326dc36ee2c74-staging-210251-deployment",
+          "s3Key": "amplify-builds/drankinaptest22c9e886-6e7130303064386a6b6c-build.zip"
+        },
+        "drankinaptest37b61baf": {
+          "deploymentBucketName": "amplify-amplify326dc36ee2c74-staging-210251-deployment",
+          "s3Key": "amplify-builds/drankinaptest37b61baf-774949764b3655614e4b-build.zip"
+        },
+        "drankinaptest86f10f68": {
+          "deploymentBucketName": "amplify-amplify326dc36ee2c74-staging-210251-deployment",
+          "s3Key": "amplify-builds/drankinaptest86f10f68-51795470645432746b4d-build.zip"
+        },
+        "drankinaptest440ba222": {
+          "deploymentBucketName": "amplify-amplify326dc36ee2c74-staging-210251-deployment",
+          "s3Key": "amplify-builds/drankinaptest440ba222-6852454f516b624b3151-build.zip"
+        },
+        "posts": {},
+        "profiles": {},
+        "comments": {},
+        "topics": {},
+        "postsFunction": {},
+        "profilesFunction": {},
+        "commentsFunction": {},
+        "topicsFunction": {},
+        "PostHandler": {
+          "deploymentBucketName": "amplify-amplify326dc36ee2c74-staging-210251-deployment",
+          "s3Key": "amplify-builds/PostHandler-45693245457649444c52-build.zip"
+        }
+      },
+      "api": {
+        "drankinaptest": {}
       }
     }
   }

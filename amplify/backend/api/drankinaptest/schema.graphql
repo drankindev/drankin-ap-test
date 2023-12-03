@@ -1,15 +1,8 @@
-type Comment @model @auth(rules: [{allow: public}]) {
+type Blog @model @auth(rules: [{allow: public}]) {
   id: ID!
-  text: String!
-  postID: ID! @index(name: "byPost")
-  profileID: ID! @index(name: "byProfile")
-}
-
-type Profile @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  username: String!
-  Posts: [Post] @hasMany(indexName: "byProfile", fields: ["id"])
-  Comments: [Comment] @hasMany(indexName: "byProfile", fields: ["id"])
+  name: String!
+  posts: [Post] @manyToMany(relationName: "BlogPost")
+  blogId: String
   description: String
   image: String
 }
@@ -17,16 +10,18 @@ type Profile @model @auth(rules: [{allow: public}]) {
 type Post @model @auth(rules: [{allow: public}]) {
   id: ID!
   title: String!
-  body: String!
-  Categories: [Category] @hasMany(indexName: "byPost", fields: ["id"])
-  profileID: ID! @index(name: "byProfile")
-  Comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
+  comments: [Comment] @hasMany
+  body: String
   image: String
+  postId: String
+  profileId: String
+  blogs: [Blog] @manyToMany(relationName: "BlogPost")
 }
 
-type Category @model @auth(rules: [{allow: public}]) {
+type Comment @model @auth(rules: [{allow: public}]) {
   id: ID!
-  name: String!
-  description: String
-  postID: ID! @index(name: "byPost")
+  post: Post @belongsTo
+  content: String!
+  profileId: String
 }
+ 

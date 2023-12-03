@@ -1,111 +1,24 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
+export const getBlog = /* GraphQL */ `
+  query GetBlog($id: ID!) {
+    getBlog(id: $id) {
       id
-      text
-      postID
-      profileID
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        text
-        postID
-        profileID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const commentsByPostID = /* GraphQL */ `
-  query CommentsByPostID(
-    $postID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    commentsByPostID(
-      postID: $postID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        text
-        postID
-        profileID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const commentsByProfileID = /* GraphQL */ `
-  query CommentsByProfileID(
-    $profileID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    commentsByProfileID(
-      profileID: $profileID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        text
-        postID
-        profileID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getProfile = /* GraphQL */ `
-  query GetProfile($id: ID!) {
-    getProfile(id: $id) {
-      id
-      username
-      Posts {
+      name
+      posts {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
         nextToken
         __typename
       }
-      Comments {
-        nextToken
-        __typename
-      }
+      blogId
       description
       image
       createdAt
@@ -114,16 +27,21 @@ export const getProfile = /* GraphQL */ `
     }
   }
 `;
-export const listProfiles = /* GraphQL */ `
-  query ListProfiles(
-    $filter: ModelProfileFilterInput
+export const listBlogs = /* GraphQL */ `
+  query ListBlogs(
+    $filter: ModelBlogFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        username
+        name
+        posts {
+          nextToken
+          __typename
+        }
+        blogId
         description
         image
         createdAt
@@ -140,17 +58,75 @@ export const getPost = /* GraphQL */ `
     getPost(id: $id) {
       id
       title
+      comments {
+        items {
+          id
+          content
+          profileId
+          createdAt
+          updatedAt
+          postCommentsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       body
-      Categories {
-        nextToken
-        __typename
-      }
-      profileID
-      Comments {
-        nextToken
-        __typename
-      }
       image
+      postId
+      profileId
+      blogs {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const getPostByPostId = /* GraphQL */ `
+  query GetPost($postId: String) {
+    getPost(postId: $postId) {
+      id
+      title
+      comments {
+        items {
+          id
+          content
+          profileId
+          createdAt
+          updatedAt
+          postCommentsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      body
+      image
+      postId
+      profileId
+      blogs {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -167,9 +143,18 @@ export const listPosts = /* GraphQL */ `
       items {
         id
         title
+        comments {
+          nextToken
+          __typename
+        }
         body
-        profileID
         image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         __typename
@@ -179,29 +164,63 @@ export const listPosts = /* GraphQL */ `
     }
   }
 `;
-export const postsByProfileID = /* GraphQL */ `
-  query PostsByProfileID(
-    $profileID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelPostFilterInput
+export const getComment = /* GraphQL */ `
+  query GetComment($id: ID!) {
+    getComment(id: $id) {
+      id
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      content
+      profileId
+      createdAt
+      updatedAt
+      postCommentsId
+      __typename
+    }
+  }
+`;
+export const listComments = /* GraphQL */ `
+  query ListComments(
+    $filter: ModelCommentFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    postsByProfileID(
-      profileID: $profileID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
+    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        body
-        profileID
-        image
+        post {
+          id
+          title
+          body
+          image
+          postId
+          profileId
+          createdAt
+          updatedAt
+          __typename
+        }
+        content
+        profileId
         createdAt
         updatedAt
+        postCommentsId
         __typename
       }
       nextToken
@@ -209,31 +228,83 @@ export const postsByProfileID = /* GraphQL */ `
     }
   }
 `;
-export const getCategory = /* GraphQL */ `
-  query GetCategory($id: ID!) {
-    getCategory(id: $id) {
+export const getBlogPost = /* GraphQL */ `
+  query GetBlogPost($id: ID!) {
+    getBlogPost(id: $id) {
       id
-      name
-      description
-      postID
+      blogId
+      postId
+      blog {
+        id
+        name
+        posts {
+          nextToken
+          __typename
+        }
+        blogId
+        description
+        image
+        createdAt
+        updatedAt
+        __typename
+      }
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const listCategories = /* GraphQL */ `
-  query ListCategories(
-    $filter: ModelCategoryFilterInput
+export const listBlogPosts = /* GraphQL */ `
+  query ListBlogPosts(
+    $filter: ModelBlogPostFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listCategories(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listBlogPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
-        description
-        postID
+        blogId
+        postId
+        blog {
+          id
+          name
+          blogId
+          description
+          image
+          createdAt
+          updatedAt
+          __typename
+        }
+        post {
+          id
+          title
+          body
+          image
+          postId
+          profileId
+          createdAt
+          updatedAt
+          __typename
+        }
         createdAt
         updatedAt
         __typename
@@ -243,16 +314,16 @@ export const listCategories = /* GraphQL */ `
     }
   }
 `;
-export const categoriesByPostID = /* GraphQL */ `
-  query CategoriesByPostID(
-    $postID: ID!
+export const blogPostsByBlogId = /* GraphQL */ `
+  query BlogPostsByBlogId(
+    $blogId: ID!
     $sortDirection: ModelSortDirection
-    $filter: ModelCategoryFilterInput
+    $filter: ModelBlogPostFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    categoriesByPostID(
-      postID: $postID
+    blogPostsByBlogId(
+      blogId: $blogId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -260,9 +331,78 @@ export const categoriesByPostID = /* GraphQL */ `
     ) {
       items {
         id
-        name
-        description
-        postID
+        blogId
+        postId
+        blog {
+          id
+          name
+          blogId
+          description
+          image
+          createdAt
+          updatedAt
+          __typename
+        }
+        post {
+          id
+          title
+          body
+          image
+          postId
+          profileId
+          createdAt
+          updatedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const blogPostsByPostId = /* GraphQL */ `
+  query BlogPostsByPostId(
+    $postId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelBlogPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    blogPostsByPostId(
+      postId: $postId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        blogId
+        postId
+        blog {
+          id
+          name
+          blogId
+          description
+          image
+          createdAt
+          updatedAt
+          __typename
+        }
+        post {
+          id
+          title
+          body
+          image
+          postId
+          profileId
+          createdAt
+          updatedAt
+          __typename
+        }
         createdAt
         updatedAt
         __typename

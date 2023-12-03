@@ -1,70 +1,27 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createComment = /* GraphQL */ `
-  mutation CreateComment(
-    $input: CreateCommentInput!
-    $condition: ModelCommentConditionInput
+export const createBlog = /* GraphQL */ `
+  mutation CreateBlog(
+    $input: CreateBlogInput!
+    $condition: ModelBlogConditionInput
   ) {
-    createComment(input: $input, condition: $condition) {
+    createBlog(input: $input, condition: $condition) {
       id
-      text
-      postID
-      profileID
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const updateComment = /* GraphQL */ `
-  mutation UpdateComment(
-    $input: UpdateCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    updateComment(input: $input, condition: $condition) {
-      id
-      text
-      postID
-      profileID
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const deleteComment = /* GraphQL */ `
-  mutation DeleteComment(
-    $input: DeleteCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    deleteComment(input: $input, condition: $condition) {
-      id
-      text
-      postID
-      profileID
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const createProfile = /* GraphQL */ `
-  mutation CreateProfile(
-    $input: CreateProfileInput!
-    $condition: ModelProfileConditionInput
-  ) {
-    createProfile(input: $input, condition: $condition) {
-      id
-      username
-      Posts {
+      name
+      posts {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
         nextToken
         __typename
       }
-      Comments {
-        nextToken
-        __typename
-      }
+      blogId
       description
       image
       createdAt
@@ -73,22 +30,27 @@ export const createProfile = /* GraphQL */ `
     }
   }
 `;
-export const updateProfile = /* GraphQL */ `
-  mutation UpdateProfile(
-    $input: UpdateProfileInput!
-    $condition: ModelProfileConditionInput
+export const updateBlog = /* GraphQL */ `
+  mutation UpdateBlog(
+    $input: UpdateBlogInput!
+    $condition: ModelBlogConditionInput
   ) {
-    updateProfile(input: $input, condition: $condition) {
+    updateBlog(input: $input, condition: $condition) {
       id
-      username
-      Posts {
+      name
+      posts {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
         nextToken
         __typename
       }
-      Comments {
-        nextToken
-        __typename
-      }
+      blogId
       description
       image
       createdAt
@@ -97,22 +59,27 @@ export const updateProfile = /* GraphQL */ `
     }
   }
 `;
-export const deleteProfile = /* GraphQL */ `
-  mutation DeleteProfile(
-    $input: DeleteProfileInput!
-    $condition: ModelProfileConditionInput
+export const deleteBlog = /* GraphQL */ `
+  mutation DeleteBlog(
+    $input: DeleteBlogInput!
+    $condition: ModelBlogConditionInput
   ) {
-    deleteProfile(input: $input, condition: $condition) {
+    deleteBlog(input: $input, condition: $condition) {
       id
-      username
-      Posts {
+      name
+      posts {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
         nextToken
         __typename
       }
-      Comments {
-        nextToken
-        __typename
-      }
+      blogId
       description
       image
       createdAt
@@ -129,17 +96,35 @@ export const createPost = /* GraphQL */ `
     createPost(input: $input, condition: $condition) {
       id
       title
+      comments {
+        items {
+          id
+          content
+          profileId
+          createdAt
+          updatedAt
+          postCommentsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       body
-      Categories {
-        nextToken
-        __typename
-      }
-      profileID
-      Comments {
-        nextToken
-        __typename
-      }
       image
+      postId
+      profileId
+      blogs {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -154,17 +139,35 @@ export const updatePost = /* GraphQL */ `
     updatePost(input: $input, condition: $condition) {
       id
       title
+      comments {
+        items {
+          id
+          content
+          profileId
+          createdAt
+          updatedAt
+          postCommentsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       body
-      Categories {
-        nextToken
-        __typename
-      }
-      profileID
-      Comments {
-        nextToken
-        __typename
-      }
       image
+      postId
+      profileId
+      blogs {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -179,65 +182,284 @@ export const deletePost = /* GraphQL */ `
     deletePost(input: $input, condition: $condition) {
       id
       title
+      comments {
+        items {
+          id
+          content
+          profileId
+          createdAt
+          updatedAt
+          postCommentsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       body
-      Categories {
-        nextToken
-        __typename
-      }
-      profileID
-      Comments {
-        nextToken
-        __typename
-      }
       image
+      postId
+      profileId
+      blogs {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const createCategory = /* GraphQL */ `
-  mutation CreateCategory(
-    $input: CreateCategoryInput!
-    $condition: ModelCategoryConditionInput
+export const createComment = /* GraphQL */ `
+  mutation CreateComment(
+    $input: CreateCommentInput!
+    $condition: ModelCommentConditionInput
   ) {
-    createCategory(input: $input, condition: $condition) {
+    createComment(input: $input, condition: $condition) {
       id
-      name
-      description
-      postID
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      content
+      profileId
+      createdAt
+      updatedAt
+      postCommentsId
+      __typename
+    }
+  }
+`;
+export const updateComment = /* GraphQL */ `
+  mutation UpdateComment(
+    $input: UpdateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    updateComment(input: $input, condition: $condition) {
+      id
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      content
+      profileId
+      createdAt
+      updatedAt
+      postCommentsId
+      __typename
+    }
+  }
+`;
+export const deleteComment = /* GraphQL */ `
+  mutation DeleteComment(
+    $input: DeleteCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    deleteComment(input: $input, condition: $condition) {
+      id
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      content
+      profileId
+      createdAt
+      updatedAt
+      postCommentsId
+      __typename
+    }
+  }
+`;
+export const createBlogPost = /* GraphQL */ `
+  mutation CreateBlogPost(
+    $input: CreateBlogPostInput!
+    $condition: ModelBlogPostConditionInput
+  ) {
+    createBlogPost(input: $input, condition: $condition) {
+      id
+      blogId
+      postId
+      blog {
+        id
+        name
+        posts {
+          nextToken
+          __typename
+        }
+        blogId
+        description
+        image
+        createdAt
+        updatedAt
+        __typename
+      }
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const updateCategory = /* GraphQL */ `
-  mutation UpdateCategory(
-    $input: UpdateCategoryInput!
-    $condition: ModelCategoryConditionInput
+export const updateBlogPost = /* GraphQL */ `
+  mutation UpdateBlogPost(
+    $input: UpdateBlogPostInput!
+    $condition: ModelBlogPostConditionInput
   ) {
-    updateCategory(input: $input, condition: $condition) {
+    updateBlogPost(input: $input, condition: $condition) {
       id
-      name
-      description
-      postID
+      blogId
+      postId
+      blog {
+        id
+        name
+        posts {
+          nextToken
+          __typename
+        }
+        blogId
+        description
+        image
+        createdAt
+        updatedAt
+        __typename
+      }
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const deleteCategory = /* GraphQL */ `
-  mutation DeleteCategory(
-    $input: DeleteCategoryInput!
-    $condition: ModelCategoryConditionInput
+export const deleteBlogPost = /* GraphQL */ `
+  mutation DeleteBlogPost(
+    $input: DeleteBlogPostInput!
+    $condition: ModelBlogPostConditionInput
   ) {
-    deleteCategory(input: $input, condition: $condition) {
+    deleteBlogPost(input: $input, condition: $condition) {
       id
-      name
-      description
-      postID
+      blogId
+      postId
+      blog {
+        id
+        name
+        posts {
+          nextToken
+          __typename
+        }
+        blogId
+        description
+        image
+        createdAt
+        updatedAt
+        __typename
+      }
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename

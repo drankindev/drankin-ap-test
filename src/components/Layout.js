@@ -1,14 +1,15 @@
 import { Outlet } from "react-router-dom";
-import CategoriesList from './CategoriesList'
+import TagList from './common/TagList'
 
 const Layout = () => {
+    
     return (
         <>              
             <div className="flex text-left pt-24 bg-blue-50 min-h-screen">
-                <nav className="fixed z-40 hidden md:block flex-initial w-44 m-8 lg:w-56 rounded p-4 bg-white">
-                    <CategoriesList />
+                <nav className="fixed z-40 flex-initial w-44 m-8 rounded p-4 bg-white">
+                    <TagList />
                 </nav>
-                <section className="md:pl-52 lg:pl-56 my-8 mx-8 pb-24 md:mx-auto w-auto max-w-4xl">
+                <section className="my-8 py-8 pl-56 mx-auto w-auto max-w-6xl">
                     <Outlet/>
                 </section>
             </div>

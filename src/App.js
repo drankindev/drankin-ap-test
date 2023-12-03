@@ -1,16 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import './App.css';
 import './tailwind.generated.css';
 import "@aws-amplify/ui-react/styles.css";
-import {
-  withAuthenticator,
-  View,
-} from "@aws-amplify/ui-react";
 
-import Layout from './components/Layout';
-import Home from './components/Home';
+import { withAuthenticator, View } from "@aws-amplify/ui-react";
+import Posts from './components/Posts';
+import Post from './components/Post';
 import Profile from './components/Profile';
-import CategoriesListEdit from './components/CategoriesListEdit';
 import NotFound from './components/NotFound';
 import Header from './components/Header';
 
@@ -19,15 +17,19 @@ function App({signOut, user}) {
     <>  
     <View className="App">     
       <BrowserRouter>
-        <Header signOut={signOut} user={user}/>
+        <Header signOut={signOut}/>
+        <div className="flex text-left pt-24 bg-blue-50 min-h-screen">
+
         <Routes>
-          <Route exact path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="/profile/:profileId" element={<Profile user={user}/>} />
-            <Route path="/categories" element={<CategoriesListEdit />} />
+            <Route path="/" element={<Navigate to="/posts" replace />} />
+            <Route path="/posts" element={<Posts user={user} />} />
+            <Route path="/posts/:blogId" element={<Posts user={user} />} />
+            <Route path="/post/:postId" element={<Post user={user}/>} />
+            <Route path="/profile" element={<Profile user={user}/>} />
             <Route path="*" element={<NotFound />} />
-          </Route>
         </Routes>
+
+        </div>
       </BrowserRouter>      
     </View>
     </>

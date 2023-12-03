@@ -1,58 +1,24 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
-    onCreateComment(filter: $filter) {
+export const onCreateBlog = /* GraphQL */ `
+  subscription OnCreateBlog($filter: ModelSubscriptionBlogFilterInput) {
+    onCreateBlog(filter: $filter) {
       id
-      text
-      postID
-      profileID
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
-    onUpdateComment(filter: $filter) {
-      id
-      text
-      postID
-      profileID
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
-    onDeleteComment(filter: $filter) {
-      id
-      text
-      postID
-      profileID
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onCreateProfile = /* GraphQL */ `
-  subscription OnCreateProfile($filter: ModelSubscriptionProfileFilterInput) {
-    onCreateProfile(filter: $filter) {
-      id
-      username
-      Posts {
+      name
+      posts {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
         nextToken
         __typename
       }
-      Comments {
-        nextToken
-        __typename
-      }
+      blogId
       description
       image
       createdAt
@@ -61,19 +27,24 @@ export const onCreateProfile = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateProfile = /* GraphQL */ `
-  subscription OnUpdateProfile($filter: ModelSubscriptionProfileFilterInput) {
-    onUpdateProfile(filter: $filter) {
+export const onUpdateBlog = /* GraphQL */ `
+  subscription OnUpdateBlog($filter: ModelSubscriptionBlogFilterInput) {
+    onUpdateBlog(filter: $filter) {
       id
-      username
-      Posts {
+      name
+      posts {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
         nextToken
         __typename
       }
-      Comments {
-        nextToken
-        __typename
-      }
+      blogId
       description
       image
       createdAt
@@ -82,19 +53,24 @@ export const onUpdateProfile = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteProfile = /* GraphQL */ `
-  subscription OnDeleteProfile($filter: ModelSubscriptionProfileFilterInput) {
-    onDeleteProfile(filter: $filter) {
+export const onDeleteBlog = /* GraphQL */ `
+  subscription OnDeleteBlog($filter: ModelSubscriptionBlogFilterInput) {
+    onDeleteBlog(filter: $filter) {
       id
-      username
-      Posts {
+      name
+      posts {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
         nextToken
         __typename
       }
-      Comments {
-        nextToken
-        __typename
-      }
+      blogId
       description
       image
       createdAt
@@ -108,17 +84,35 @@ export const onCreatePost = /* GraphQL */ `
     onCreatePost(filter: $filter) {
       id
       title
+      comments {
+        items {
+          id
+          content
+          profileId
+          createdAt
+          updatedAt
+          postCommentsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       body
-      Categories {
-        nextToken
-        __typename
-      }
-      profileID
-      Comments {
-        nextToken
-        __typename
-      }
       image
+      postId
+      profileId
+      blogs {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -130,17 +124,35 @@ export const onUpdatePost = /* GraphQL */ `
     onUpdatePost(filter: $filter) {
       id
       title
+      comments {
+        items {
+          id
+          content
+          profileId
+          createdAt
+          updatedAt
+          postCommentsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       body
-      Categories {
-        nextToken
-        __typename
-      }
-      profileID
-      Comments {
-        nextToken
-        __typename
-      }
       image
+      postId
+      profileId
+      blogs {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -152,56 +164,266 @@ export const onDeletePost = /* GraphQL */ `
     onDeletePost(filter: $filter) {
       id
       title
+      comments {
+        items {
+          id
+          content
+          profileId
+          createdAt
+          updatedAt
+          postCommentsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       body
-      Categories {
-        nextToken
-        __typename
-      }
-      profileID
-      Comments {
-        nextToken
-        __typename
-      }
       image
+      postId
+      profileId
+      blogs {
+        items {
+          id
+          blogId
+          postId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const onCreateCategory = /* GraphQL */ `
-  subscription OnCreateCategory($filter: ModelSubscriptionCategoryFilterInput) {
-    onCreateCategory(filter: $filter) {
+export const onCreateComment = /* GraphQL */ `
+  subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
+    onCreateComment(filter: $filter) {
       id
-      name
-      description
-      postID
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      content
+      profileId
+      createdAt
+      updatedAt
+      postCommentsId
+      __typename
+    }
+  }
+`;
+export const onUpdateComment = /* GraphQL */ `
+  subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
+    onUpdateComment(filter: $filter) {
+      id
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      content
+      profileId
+      createdAt
+      updatedAt
+      postCommentsId
+      __typename
+    }
+  }
+`;
+export const onDeleteComment = /* GraphQL */ `
+  subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
+    onDeleteComment(filter: $filter) {
+      id
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      content
+      profileId
+      createdAt
+      updatedAt
+      postCommentsId
+      __typename
+    }
+  }
+`;
+export const onCreateBlogPost = /* GraphQL */ `
+  subscription OnCreateBlogPost($filter: ModelSubscriptionBlogPostFilterInput) {
+    onCreateBlogPost(filter: $filter) {
+      id
+      blogId
+      postId
+      blog {
+        id
+        name
+        posts {
+          nextToken
+          __typename
+        }
+        blogId
+        description
+        image
+        createdAt
+        updatedAt
+        __typename
+      }
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const onUpdateCategory = /* GraphQL */ `
-  subscription OnUpdateCategory($filter: ModelSubscriptionCategoryFilterInput) {
-    onUpdateCategory(filter: $filter) {
+export const onUpdateBlogPost = /* GraphQL */ `
+  subscription OnUpdateBlogPost($filter: ModelSubscriptionBlogPostFilterInput) {
+    onUpdateBlogPost(filter: $filter) {
       id
-      name
-      description
-      postID
+      blogId
+      postId
+      blog {
+        id
+        name
+        posts {
+          nextToken
+          __typename
+        }
+        blogId
+        description
+        image
+        createdAt
+        updatedAt
+        __typename
+      }
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const onDeleteCategory = /* GraphQL */ `
-  subscription OnDeleteCategory($filter: ModelSubscriptionCategoryFilterInput) {
-    onDeleteCategory(filter: $filter) {
+export const onDeleteBlogPost = /* GraphQL */ `
+  subscription OnDeleteBlogPost($filter: ModelSubscriptionBlogPostFilterInput) {
+    onDeleteBlogPost(filter: $filter) {
       id
-      name
-      description
-      postID
+      blogId
+      postId
+      blog {
+        id
+        name
+        posts {
+          nextToken
+          __typename
+        }
+        blogId
+        description
+        image
+        createdAt
+        updatedAt
+        __typename
+      }
+      post {
+        id
+        title
+        comments {
+          nextToken
+          __typename
+        }
+        body
+        image
+        postId
+        profileId
+        blogs {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
