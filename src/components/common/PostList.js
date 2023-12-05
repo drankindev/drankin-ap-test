@@ -6,12 +6,11 @@ const PostList = ({ posts, sortBy = 'createdAt' }) => {
   return (    
     <ul>         
     {posts.sort((a, b) => a[sortBy] > b[sortBy] ? -1 : 1).map((post) => {
-        let path = '/post/' + (post.postId ? post.postId : post.id);
-        return(<li key={post.id} className="list-none">
-            <Link className={`font-bold font-roboto hover:text-red-700`} to={path}>
+        return(<li key={post.id} className="list-none py-1 border-b border-b-gray-300">
+            <Link className="font-bold font-roboto hover:text-red-700" to={`/post/${post.id}`}>
             {post.title}
             </Link>
-            <p><i>{dayjs(post.createdAt).format('MM/DD/YYY')}</i></p>
+            <p className="text-xs"><i>{dayjs(post.createdAt.substring(0, 10)).format('MM-DD-YYYY')}</i> &bull; {post.profileId}</p>
         </li>)
     })}
     </ul>

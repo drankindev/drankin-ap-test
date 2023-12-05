@@ -6,7 +6,7 @@ const BlogList = ({blogs, active}) => {
   return (
     <>
       <h3 className="font-bebas text-lg text-red-700 font-bold w-full inline-block pb-1 mb-1 border-b border-b-black">Topics</h3>
-      {blogs &&
+      {blogs.length > 0 &&
       <ul>
         {blogs.sort((a, b) => a.name > b.name ? 1 : -1).map((blog) =>          
           <li key={blog.name} className="list-none">

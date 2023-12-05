@@ -4,17 +4,21 @@ import { UserCircleIcon, PowerIcon } from '@heroicons/react/24/outline'
 
 const Header = ({ signOut }) => {
     return(
-        <header className="w-full fixed z-50 px-6 py-4 bg-slate-400">
-            <div className="w-full justify-between items-center flex">
-            <Link to="/"><span className="font-bebas text-4xl">Bloggaboudit<span className="text-red-700">!</span></span></Link>
+        <header className="w-full fixed z-50 px-6 py-4 bg-slate-400 drop-shadow">
+            <div className="w-full relative">
+                <div className="float-left">          
+                    <Link to="/" title="Home"><span className="font-bebas text-4xl">Bloggaboudit<span className="text-red-700">!</span></span></Link>
+                </div>
 
-            <nav className="flex gap-4">
-                <Link className="block w-8 h-8 text-black hover:text-red-700 bg-white rounded-full" to="/profile" title="Your Profile"><UserCircleIcon/>
-                </Link>
-                <button className="block w-8 h-8 text-black hover:text-red-700 bg-white rounded-full" onClick={signOut} title="Log Off"><PowerIcon/></button>
-            </nav>
-
-            </div>
+                <nav className="float-right flex gap-4 mt-3">
+                    <Link className="font-bold hover:text-red-700" to="/profile" title="Your Profile">
+                        Profile
+                    </Link>
+                    <button className="font-bold hover:text-red-700" onClick={signOut} title="Sign out">
+                        Sign out
+                    </button>
+                </nav>
+            </div>     
         </header>
     )
 }

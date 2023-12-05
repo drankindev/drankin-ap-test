@@ -1,9 +1,11 @@
 /* eslint-disable */
 import * as React from "react";
-import { Button, Grid, TextAreaField, TextField, VisuallyHidden } from "@aws-amplify/ui-react";
+import { Button, Grid, TextAreaField, Fieldset, CheckboxField, TextField, VisuallyHidden } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "../../ui-components/utils";
 import { generateClient } from "aws-amplify/api";
-import { getPost } from "../../graphql/queries";
+import { uploadData, getUrl } from 'aws-amplify/storage';
+import ImageUploader from './ImageUploader'
+import { getPost, blogPostsByPostId } from "../../graphql/queries";
 import { updatePost, createPost } from "../../graphql/mutations";
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import ReactQuill from 'react-quill';
@@ -22,6 +24,7 @@ export default function PostUpdateForm(props) {
     overrides,
     setEditor,
     username,
+    blogList,
     ...rest
   } = props;
   const initialValues = {
@@ -30,12 +33,16 @@ export default function PostUpdateForm(props) {
     image: "",
     postId: "",
     profileId: "",
+    blogs: []
   };
   const [title, setTitle] = React.useState(initialValues.title);
   const [body, setBody] = React.useState(initialValues.body);
   const [image, setImage] = React.useState(initialValues.image);
   const [postId, setPostId] = React.useState(initialValues.postId);
   const [profileId, setProfileId] = React.useState(initialValues.profileId);
+  const [imageFile, setImageFile] = React.useState({});
+  // const [checkedBlogs, setCheckedBlogs] = React.useState([]);
+  // const [blogPosts, setBlogPosts]  = React.useState([]);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = postRecord
@@ -45,11 +52,11 @@ export default function PostUpdateForm(props) {
     setBody(cleanValues.body);
     setImage(cleanValues.image);
     setPostId(cleanValues.postId);
-    setProfileId(initialValues.profileId);
+    setProfileId(cleanValues.profileId);
+    //setBlogs(cleanValues.blogs);
     setErrors({});
   };
   const [postRecord, setPostRecord] = React.useState(postModelProp);
-  
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
@@ -62,6 +69,25 @@ export default function PostUpdateForm(props) {
         : postModelProp;
       setPostRecord(record);
     };
+    // const fetchBlogPosts = async (idProp) => {
+    //   try {
+    //     const apiData = await client.graphql({ 
+    //       query: blogPostsByPostId,
+    //       variables: { postId: idProp }
+    //     });
+    //     const data = apiData.data.blogPostsByPostId.blogs;
+
+    //     let tmp = [];
+    //     data.map(blog => {
+    //       tmp.push(blog.id);
+    //     })
+    //     setCheckedBlogs(...tmp);
+    //     setBlogPosts(data);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
+    // fetchBlogPosts(idProp);
     queryData();
   }, [idProp, postModelProp]);
   React.useEffect(resetStateValues, [postRecord]);
@@ -89,11 +115,12 @@ export default function PostUpdateForm(props) {
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
   };
+
   return (
     <div className="fixed w-full h-full z-50 bg-black bg-opacity-80 top-0 left-0 p-8 overflow-y-scroll">
       <div className=" relative w-full max-w-3xl mx-auto p-4 bg-white rounded" >
         <h3 className="font-bebas text-lg text-red-700 font-bold w-full inline-block pb-1 mb-1 border-b border-b-black">{idProp ? 'Edit Post' : 'Create Post'}</h3>
-        <button className="absolute right-2 top-2 block w-8 h-8 text-black hover:text-red-700 bg-white rounded-full" onClick={() => setEditor(false)}><XMarkIcon/></button>
+        <button className="absolute right-2 top-2 block w-8 h-8 text-black hover:text-red-700 bg-white rounded-full" onClick={(e) => setEditor(false)}><XMarkIcon/></button>
     <Grid
       as="form"
       rowGap="15px"
@@ -179,17 +206,6 @@ export default function PostUpdateForm(props) {
         value={title}
         onChange={(e) => {
           let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              title: value,
-              body,
-              image,
-              postId,
-              profileId,
-            };
-            const result = onChange(modelFields);
-            value = result?.title ?? value;
-          }
           if (errors.title?.hasError) {
             runValidationTasks("title", value);
           }
@@ -203,34 +219,9 @@ export default function PostUpdateForm(props) {
         hasError={errors.title?.hasError}
         {...getOverrideProps(overrides, "title")}
       ></TextField>
-      <TextField
-        label="Image"
-        isRequired={false}
-        isReadOnly={false}
-        value={image}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              title,
-              body,
-              image: value,
-              postId,
-              profileId,
-            };
-            const result = onChange(modelFields);
-            value = result?.image ?? value;
-          }
-          if (errors.image?.hasError) {
-            runValidationTasks("image", value);
-          }
-          setImage(value);
-        }}
-        onBlur={() => runValidationTasks("image", image)}
-        errorMessage={errors.image?.errorMessage}
-        hasError={errors.image?.hasError}
-        {...getOverrideProps(overrides, "image")}
-      ></TextField>
+
+      <ImageUploader id={idProp}/>
+
       <div className="amplify-flex amplify-field amplify-textfield">
       <h4 className="amplify-label">Body</h4>
       <ReactQuill 
@@ -246,17 +237,6 @@ export default function PostUpdateForm(props) {
         value={body}
         onChange={(e) => {
           let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              title,
-              body: value,
-              image,
-              postId,
-              profileId,
-            };
-            const result = onChange(modelFields);
-            value = result?.body ?? value;
-          }
           if (errors.body?.hasError) {
             runValidationTasks("body", value);
           }
@@ -274,17 +254,6 @@ export default function PostUpdateForm(props) {
         value={postId}
         onChange={(e) => {
           let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              title,
-              body,
-              image,
-              postId: value,
-              profileId,
-            };
-            const result = onChange(modelFields);
-            value = result?.postId ?? value;
-          }
           if (errors.postId?.hasError) {
             runValidationTasks("postId", value);
           }
@@ -302,17 +271,6 @@ export default function PostUpdateForm(props) {
         value={profileId}
         onChange={(e) => {
           let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              title,
-              body,
-              image,
-              postId,
-              profileId: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.profileId ?? value;
-          }
           if (errors.profileId?.hasError) {
             runValidationTasks("profileId", value);
           }

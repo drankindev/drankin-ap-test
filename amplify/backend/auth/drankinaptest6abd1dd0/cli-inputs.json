@@ -61,7 +61,7 @@
     "dependsOn": [],
     "thirdPartyAuth": false,
     "userPoolGroups": false,
-    "adminQueries": false,
+    "adminQueries": true,
     "triggers": {},
     "hostedUI": false,
     "authProviders": [],

@@ -9,6 +9,7 @@ export const getBlog = /* GraphQL */ `
       posts {
         items {
           id
+          title
           blogId
           postId
           createdAt
