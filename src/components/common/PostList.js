@@ -10,7 +10,7 @@ const PostList = ({ posts, sortBy = 'createdAt' }) => {
             <Link className="font-bold font-roboto hover:text-red-700" to={`/post/${post.id}`}>
             {post.title}
             </Link>
-            <p className="text-xs"><i>{dayjs(post.createdAt.substring(0, 10)).format('MM-DD-YYYY')}</i> &bull; {post.profileId}</p>
+            <p className="text-xs"><i>{dayjs(post.createdAt.substring(0, 10)).format('MM-DD-YYYY')}</i> &bull; <b>{post.profileId}</b></p>
         </li>)
     })}
     </ul>

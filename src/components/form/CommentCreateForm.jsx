@@ -10,6 +10,8 @@ import { Button, Flex, Grid, TextField, TextAreaField, VisuallyHidden } from "@a
 import { fetchByPath, getOverrideProps, validateField } from "../../ui-components/utils";
 import { generateClient } from "aws-amplify/api";
 import { createComment } from "../../graphql/mutations";
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
+
 const client = generateClient();
 export default function CommentCreateForm(props) {
   const {
@@ -30,18 +32,16 @@ export default function CommentCreateForm(props) {
   };
   const [content, setContent] = React.useState(initialValues.content);
   const [profileId, setProfileId] = React.useState(user.username);
-  const [post, setPost] = React.useState(targetPost);
+  const [toggle, setToggle] = React.useState(false);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setContent(initialValues.content);
-    setProfileId(initialValues.profileId);
-    setPost(initialValues.post);
+    setToggle(false);
     setErrors({});
   };
   const validations = {
     content: [{ type: "Required" }],
-    profileId: [],
-    post:[]
+    profileId: []
   };
   const runValidationTasks = async (
     fieldName,
@@ -61,11 +61,23 @@ export default function CommentCreateForm(props) {
     return validationResponse;
   };
   return (
+    <div className="border-t border-t-black">
+      <button className="text-bold relative text-left w-full py-2 bg-white hover:bg-gray-100 border-b border-b-black" 
+        onClick={(e) => setToggle(!toggle)}
+        >
+        Post a comment
+        {toggle ?
+          <ChevronUpIcon className="w-4 h-4 absolute right-0 top-3 text-gray-400"/>
+        :
+          <ChevronDownIcon className="w-4 h-4 absolute right-0 top-3 text-gray-400"/>
+        }
+      </button>
+      <div className={`transition-[height] overflow-hidden ${toggle ? 'h-52' : 'h-0'}`}>
     <Grid
       as="form"
-      rowGap="15px"
+      rowGap=""
       columnGap="15px"
-      padding="20px"
+      padding="10px 20px"
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
@@ -100,16 +112,16 @@ export default function CommentCreateForm(props) {
               modelFields[key] = null;
             }
           });
-          console.log(post)
-          //modelFields['post'] = post;
-          await client.graphql({
-            query: createComment.replaceAll("__typename", ""),
+          const create = await client.graphql({
+            query: createComment,
             variables: {
               input: {
                 ...modelFields,
+                postCommentsId: targetPost.id
               },
             },
           });
+          
           if (onSuccess) {
             onSuccess(modelFields);
           }
@@ -117,20 +129,18 @@ export default function CommentCreateForm(props) {
             resetStateValues();
           }
         } catch (err) {
-          if (onError) {
             const messages = err.errors.map((e) => e.message).join("\n");
-            onError(modelFields, messages);
-          }
+            console.log(err)
         }
       }}
       {...getOverrideProps(overrides, "CommentCreateForm")}
       {...rest}
     >
       <TextAreaField
-        label="Post a comment"
         isRequired={true}
         isReadOnly={false}
         value={content}
+        maxLength={200}
         onChange={(e) => {
           let { value } = e.target;
           if (errors.content?.hasError) {
@@ -171,23 +181,16 @@ export default function CommentCreateForm(props) {
         {...getOverrideProps(overrides, "profileId")}
       ></TextField>
       </VisuallyHidden>
-      <Flex
-        justifyContent="space-between"
-        {...getOverrideProps(overrides, "CTAFlex")}
-      >
-        <Button
-          children="Clear"
-          type="reset"
-          onClick={(event) => {
-            event.preventDefault();
-            resetStateValues();
-          }}
-          {...getOverrideProps(overrides, "ClearButton")}
-        ></Button>
-        <Flex
-          gap="15px"
-          {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
-        >
+      <div className="flex gap-4 mt-4 w-full justify-end">
+          <Button
+            children="Cancel"
+            type="reset"
+            onClick={(event) => {
+              event.preventDefault();
+              resetStateValues();
+            }}
+            {...getOverrideProps(overrides, "ClearButton")}
+          ></Button>
           <Button
             children="Submit"
             type="submit"
@@ -195,8 +198,9 @@ export default function CommentCreateForm(props) {
             isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
-        </Flex>
-      </Flex>
+      </div>
     </Grid>
+    </div>
+    </div>
   );
 }

@@ -46,7 +46,39 @@ export const fetchBlogPosts = async ({onSuccess, blogId}) => {
     }
   }
 
-
+export const getPost = /* GraphQL */ `
+  query GetPost($id: ID!) {
+    getPost(id: $id) {
+      id
+      title
+      comments {
+        items {
+          id
+          content
+          profileId
+          createdAt
+          updatedAt
+          postCommentsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      body
+      image
+      postId
+      profileId
+      blogs {
+        nextToken
+        __typename
+      }
+      tags
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
   export const getPostByPostId = /* GraphQL */ `
   query GetPostByPostId($postId: ID!) {
     getPostByPostId(postId: $postId) {

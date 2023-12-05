@@ -166,8 +166,10 @@ export default function PostUpdateForm(props) {
               },
             });
           }
-          setStatus('refresh'); 
+          
+          setStatus('refresh');
           setEditor(false);
+
         } catch (err) {
           if (onError) {
             const messages = err.errors.map((e) => e.message).join("\n");
