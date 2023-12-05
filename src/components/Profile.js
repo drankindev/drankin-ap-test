@@ -1,37 +1,66 @@
-import React, { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { generateClient } from "aws-amplify/api";
-import { getProfile } from "../graphql/queries";
-
-const client = generateClient()
+import React, {useState, useEffect} from 'react';
+import ImageUploader from './form/ImageUploader';
+import { fetchPostList } from './common/utils';
+import PostList from './common/PostList';
+import { fetchUserAttributes, updateUserAttribute  } from 'aws-amplify/auth';
 
 const Profile = ({user}) => {
-    const location = useLocation();
-    
-    // useEffect(() => {
-    //     const userId = location.pathname.split[1];
-    //     fetchProfile(userId);
-    // }, []);
-    
-    // async function fetchProfile(username) {
-    //     const apiData = await client.graphql({ 
-    //         query: getProfile,
-    //         variables: { username: username } 
-    //     });
-    //     console.log(apiData);
-    // }
+    const [posts, setPosts] = useState([]);
+    const [filteredPosts, setFilteredPosts] = useState([]);
+    const [image, setImage] = useState('');
 
-    // Get a specific item
-    //const oneProfile = await client.graphql({
-    //     query: getProfile,
-    //     variables: { id: 'YOUR_RECORD_ID' }
-    // });
+    useEffect(() => {
+        fetchPostList({onSuccess: setPosts});
+        handleFetchUserAttributes();
+    }, []);
+
+    useEffect(() => {
+        let tmpPosts = posts;
+        tmpPosts = tmpPosts.filter(post => post.profileId === user.username);
+
+        setFilteredPosts(tmpPosts);
+    }, [posts,user]);
+
+    useEffect(() => {
+        async function handleUpdateUserAttribute(attributeKey, value) {
+            try {
+                await updateUserAttribute({
+                    userAttribute: { attributeKey, value }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        handleUpdateUserAttribute('picture',image);
+    }, [image]);
+
+
+    async function handleFetchUserAttributes() {
+        try {
+            const userAttributes = await fetchUserAttributes();
+            if (userAttributes.picture) {
+                setImage(userAttributes.picture)
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
-        <>
-            <h1>Profile</h1>
-            <p>Username: {user.username}</p>
-        </>
+        <section className="relative my-8 p-4 mx-auto w-full max-w-2xl rounded drop-shadow bg-white">
+            <div className="flex gap-8 mb-4 w-full border-b border-b-black pb-4">
+                <h1 className="font-bebas text-2xl font-roboto font-bold text-red-700">{user.username}</h1> 
+            </div>
+
+            <ImageUploader image={image} setImage={setImage}/>  
+
+            { posts &&
+            <>
+                <h4 className="font-bebas text-base text-red-700 font-bold w-full inline-block mt-8 border-b border-b-black pb-1">Your posts</h4>
+                <PostList posts={filteredPosts}/> 
+            </>
+            }
+        </section>  
     )
 }
 

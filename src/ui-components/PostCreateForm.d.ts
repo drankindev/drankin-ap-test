@@ -27,6 +27,7 @@ export declare type PostCreateFormInputValues = {
     image?: string;
     postId?: string;
     profileId?: string;
+    tags?: string[];
 };
 export declare type PostCreateFormValidationValues = {
     title?: ValidationFunction<string>;
@@ -34,6 +35,7 @@ export declare type PostCreateFormValidationValues = {
     image?: ValidationFunction<string>;
     postId?: ValidationFunction<string>;
     profileId?: ValidationFunction<string>;
+    tags?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type PostCreateFormOverridesProps = {
@@ -43,6 +45,7 @@ export declare type PostCreateFormOverridesProps = {
     image?: PrimitiveOverrideProps<TextFieldProps>;
     postId?: PrimitiveOverrideProps<TextFieldProps>;
     profileId?: PrimitiveOverrideProps<TextFieldProps>;
+    tags?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type PostCreateFormProps = React.PropsWithChildren<{
     overrides?: PostCreateFormOverridesProps | undefined | null;

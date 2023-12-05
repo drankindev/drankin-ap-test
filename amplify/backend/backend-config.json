@@ -75,6 +75,88 @@
       "service": "Lambda"
     }
   },
+  "parameters": {
+    "AMPLIFY_function_PostHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PostHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_PostHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PostHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_drankinaptest22c9e886_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "drankinaptest22c9e886"
+        }
+      ]
+    },
+    "AMPLIFY_function_drankinaptest22c9e886_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "drankinaptest22c9e886"
+        }
+      ]
+    },
+    "AMPLIFY_function_drankinaptest37b61baf_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "drankinaptest37b61baf"
+        }
+      ]
+    },
+    "AMPLIFY_function_drankinaptest37b61baf_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "drankinaptest37b61baf"
+        }
+      ]
+    },
+    "AMPLIFY_function_drankinaptest440ba222_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "drankinaptest440ba222"
+        }
+      ]
+    },
+    "AMPLIFY_function_drankinaptest440ba222_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "drankinaptest440ba222"
+        }
+      ]
+    },
+    "AMPLIFY_function_drankinaptest86f10f68_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "drankinaptest86f10f68"
+        }
+      ]
+    },
+    "AMPLIFY_function_drankinaptest86f10f68_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "drankinaptest86f10f68"
+        }
+      ]
+    }
+  },
   "storage": {
     "s30059c7fc": {
       "dependsOn": [],

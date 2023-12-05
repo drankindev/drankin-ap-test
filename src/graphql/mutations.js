@@ -10,14 +10,6 @@ export const createBlog = /* GraphQL */ `
       id
       name
       posts {
-        items {
-          id
-          blogId
-          postId
-          createdAt
-          updatedAt
-          __typename
-        }
         nextToken
         __typename
       }
@@ -39,14 +31,6 @@ export const updateBlog = /* GraphQL */ `
       id
       name
       posts {
-        items {
-          id
-          blogId
-          postId
-          createdAt
-          updatedAt
-          __typename
-        }
         nextToken
         __typename
       }
@@ -68,14 +52,6 @@ export const deleteBlog = /* GraphQL */ `
       id
       name
       posts {
-        items {
-          id
-          blogId
-          postId
-          createdAt
-          updatedAt
-          __typename
-        }
         nextToken
         __typename
       }
@@ -97,15 +73,6 @@ export const createPost = /* GraphQL */ `
       id
       title
       comments {
-        items {
-          id
-          content
-          profileId
-          createdAt
-          updatedAt
-          postCommentsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -114,17 +81,10 @@ export const createPost = /* GraphQL */ `
       postId
       profileId
       blogs {
-        items {
-          id
-          blogId
-          postId
-          createdAt
-          updatedAt
-          __typename
-        }
         nextToken
         __typename
       }
+      tags
       createdAt
       updatedAt
       __typename
@@ -140,15 +100,6 @@ export const updatePost = /* GraphQL */ `
       id
       title
       comments {
-        items {
-          id
-          content
-          profileId
-          createdAt
-          updatedAt
-          postCommentsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -157,17 +108,10 @@ export const updatePost = /* GraphQL */ `
       postId
       profileId
       blogs {
-        items {
-          id
-          blogId
-          postId
-          createdAt
-          updatedAt
-          __typename
-        }
         nextToken
         __typename
       }
+      tags
       createdAt
       updatedAt
       __typename
@@ -183,15 +127,6 @@ export const deletePost = /* GraphQL */ `
       id
       title
       comments {
-        items {
-          id
-          content
-          profileId
-          createdAt
-          updatedAt
-          postCommentsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -200,17 +135,10 @@ export const deletePost = /* GraphQL */ `
       postId
       profileId
       blogs {
-        items {
-          id
-          blogId
-          postId
-          createdAt
-          updatedAt
-          __typename
-        }
         nextToken
         __typename
       }
+      tags
       createdAt
       updatedAt
       __typename
@@ -227,18 +155,11 @@ export const createComment = /* GraphQL */ `
       post {
         id
         title
-        comments {
-          nextToken
-          __typename
-        }
         body
         image
         postId
         profileId
-        blogs {
-          nextToken
-          __typename
-        }
+        tags
         createdAt
         updatedAt
         __typename
@@ -262,18 +183,11 @@ export const updateComment = /* GraphQL */ `
       post {
         id
         title
-        comments {
-          nextToken
-          __typename
-        }
         body
         image
         postId
         profileId
-        blogs {
-          nextToken
-          __typename
-        }
+        tags
         createdAt
         updatedAt
         __typename
@@ -297,18 +211,11 @@ export const deleteComment = /* GraphQL */ `
       post {
         id
         title
-        comments {
-          nextToken
-          __typename
-        }
         body
         image
         postId
         profileId
-        blogs {
-          nextToken
-          __typename
-        }
+        tags
         createdAt
         updatedAt
         __typename
@@ -334,10 +241,6 @@ export const createBlogPost = /* GraphQL */ `
       blog {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         blogId
         description
         image
@@ -348,18 +251,11 @@ export const createBlogPost = /* GraphQL */ `
       post {
         id
         title
-        comments {
-          nextToken
-          __typename
-        }
         body
         image
         postId
         profileId
-        blogs {
-          nextToken
-          __typename
-        }
+        tags
         createdAt
         updatedAt
         __typename
@@ -382,10 +278,6 @@ export const updateBlogPost = /* GraphQL */ `
       blog {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         blogId
         description
         image
@@ -396,18 +288,11 @@ export const updateBlogPost = /* GraphQL */ `
       post {
         id
         title
-        comments {
-          nextToken
-          __typename
-        }
         body
         image
         postId
         profileId
-        blogs {
-          nextToken
-          __typename
-        }
+        tags
         createdAt
         updatedAt
         __typename
@@ -430,10 +315,6 @@ export const deleteBlogPost = /* GraphQL */ `
       blog {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         blogId
         description
         image
@@ -444,18 +325,11 @@ export const deleteBlogPost = /* GraphQL */ `
       post {
         id
         title
-        comments {
-          nextToken
-          __typename
-        }
         body
         image
         postId
         profileId
-        blogs {
-          nextToken
-          __typename
-        }
+        tags
         createdAt
         updatedAt
         __typename

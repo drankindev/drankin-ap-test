@@ -1,27 +1,31 @@
 import * as React from "react";
-import { generateClient } from "aws-amplify/api";
 import { uploadData, getUrl, list, remove } from 'aws-amplify/storage';
 import { TrashIcon } from '@heroicons/react/24/outline'
 
-const client = generateClient();
-
-const ImageUploader = ({id}) => {
+const ImageUploader = ({id, image, setImage}) => {
     const [imageUrl, setImageUrl] = React.useState('');
     const [status, setStatus] = React.useState('init');
     const [error, setError] = React.useState('');
+    const [filename, setFilename] = React.useState(image);
     const fileInputRef = React.useRef();
     const extCheck = ['.jpg','.png'];
     const sizeCheck = 1000000;
 
     React.useEffect(() => {
-      const validateImage = async (postId) => {
+      if (image) { setStatus('loading');}
+      setFilename(image);
+    },[image]);
+    
+    React.useEffect(() => {
+      const validateImage = async () => {
         try {
           const validUrl = await list({
-            prefix: id
+            prefix: filename
           });
           if (validUrl.items.length > 0) {
+            setStatus('loading');
             const res = await getUrl({
-              key: id,
+              key: filename,
               options: {
                 accessLevel: 'public',
               }
@@ -33,15 +37,15 @@ const ImageUploader = ({id}) => {
           console.log('error',err);
           setStatus('idle');
         }
-    }
+      }
 
-    if(status === 'upload' || status === 'init') {
+      if(filename && (status === 'upload' || status === 'loading')) {
         const interval = setInterval(() => {
           validateImage();
         }, 3000);
         return () => clearInterval(interval); 
       }
-    }, [id,status]);
+    }, [filename,status]);
 
     const uploadDataInBrowser = async (event) => {
       if (event?.target?.files) {
@@ -50,7 +54,7 @@ const ImageUploader = ({id}) => {
         
         const ext = file.name.toLowerCase().substring(file.name.length - 4);
         const size = file.size;
-        console.log(ext + ' ' + !extCheck.includes(ext))
+
         if ( extCheck.includes(ext) !== true ) { 
           setError('Only .jpg or .png');
           return false;
@@ -62,7 +66,7 @@ const ImageUploader = ({id}) => {
         setError('');
         try {
           const result = await uploadData({
-            key: id,
+            key: file.name,
             data: file,
             options: {
               accessLevel: 'public'
@@ -70,6 +74,8 @@ const ImageUploader = ({id}) => {
           }).result;
           console.log('Succeeded: ', result);
           setStatus('upload');
+          setFilename(file.name);
+          setImage(file.name);
         } catch (error) {
           console.log('Error : ', error);
         }
@@ -79,7 +85,8 @@ const ImageUploader = ({id}) => {
     const deleteImage = async (event) => {
       try {
         setImageUrl('');
-        await remove({ key: id, options: { accessLevel: 'public' } });
+        setImage('');
+        await remove({ key: filename, options: { accessLevel: 'public' } });
       } catch (error) {
         console.log('Error ', error);
       }
@@ -95,9 +102,9 @@ const ImageUploader = ({id}) => {
             </div>
           :
             <>
-              {(status === 'upload') ? 
+              {(status === 'upload' || status === 'loading') ? 
                 <div className="w-44 rounded border bg-white text-sm text-grey-300 inline-block text-center py-16">
-                  Uploading...
+                  Loading...
                 </div>
               :
                 <>
@@ -107,7 +114,6 @@ const ImageUploader = ({id}) => {
                   <input 
                     className="hidden" 
                     type="file" 
-                    filename={id} 
                     ref={fileInputRef} 
                     onChange={(e) => {
                       uploadDataInBrowser(e)

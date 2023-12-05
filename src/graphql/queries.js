@@ -7,15 +7,6 @@ export const getBlog = /* GraphQL */ `
       id
       name
       posts {
-        items {
-          id
-          title
-          blogId
-          postId
-          createdAt
-          updatedAt
-          __typename
-        }
         nextToken
         __typename
       }
@@ -38,10 +29,6 @@ export const listBlogs = /* GraphQL */ `
       items {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         blogId
         description
         image
@@ -60,15 +47,6 @@ export const getPost = /* GraphQL */ `
       id
       title
       comments {
-        items {
-          id
-          content
-          profileId
-          createdAt
-          updatedAt
-          postCommentsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -77,57 +55,10 @@ export const getPost = /* GraphQL */ `
       postId
       profileId
       blogs {
-        items {
-          id
-          blogId
-          postId
-          createdAt
-          updatedAt
-          __typename
-        }
         nextToken
         __typename
       }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const getPostByPostId = /* GraphQL */ `
-  query GetPost($postId: String) {
-    getPost(postId: $postId) {
-      id
-      title
-      comments {
-        items {
-          id
-          content
-          profileId
-          createdAt
-          updatedAt
-          postCommentsId
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      body
-      image
-      postId
-      profileId
-      blogs {
-        items {
-          id
-          blogId
-          postId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
+      tags
       createdAt
       updatedAt
       __typename
@@ -144,18 +75,11 @@ export const listPosts = /* GraphQL */ `
       items {
         id
         title
-        comments {
-          nextToken
-          __typename
-        }
         body
         image
         postId
         profileId
-        blogs {
-          nextToken
-          __typename
-        }
+        tags
         createdAt
         updatedAt
         __typename
@@ -172,18 +96,11 @@ export const getComment = /* GraphQL */ `
       post {
         id
         title
-        comments {
-          nextToken
-          __typename
-        }
         body
         image
         postId
         profileId
-        blogs {
-          nextToken
-          __typename
-        }
+        tags
         createdAt
         updatedAt
         __typename
@@ -206,17 +123,6 @@ export const listComments = /* GraphQL */ `
     listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        post {
-          id
-          title
-          body
-          image
-          postId
-          profileId
-          createdAt
-          updatedAt
-          __typename
-        }
         content
         profileId
         createdAt
@@ -238,10 +144,6 @@ export const getBlogPost = /* GraphQL */ `
       blog {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         blogId
         description
         image
@@ -252,18 +154,11 @@ export const getBlogPost = /* GraphQL */ `
       post {
         id
         title
-        comments {
-          nextToken
-          __typename
-        }
         body
         image
         postId
         profileId
-        blogs {
-          nextToken
-          __typename
-        }
+        tags
         createdAt
         updatedAt
         __typename
@@ -285,27 +180,6 @@ export const listBlogPosts = /* GraphQL */ `
         id
         blogId
         postId
-        blog {
-          id
-          name
-          blogId
-          description
-          image
-          createdAt
-          updatedAt
-          __typename
-        }
-        post {
-          id
-          title
-          body
-          image
-          postId
-          profileId
-          createdAt
-          updatedAt
-          __typename
-        }
         createdAt
         updatedAt
         __typename
@@ -334,27 +208,6 @@ export const blogPostsByBlogId = /* GraphQL */ `
         id
         blogId
         postId
-        blog {
-          id
-          name
-          blogId
-          description
-          image
-          createdAt
-          updatedAt
-          __typename
-        }
-        post {
-          id
-          title
-          body
-          image
-          postId
-          profileId
-          createdAt
-          updatedAt
-          __typename
-        }
         createdAt
         updatedAt
         __typename
@@ -383,27 +236,6 @@ export const blogPostsByPostId = /* GraphQL */ `
         id
         blogId
         postId
-        blog {
-          id
-          name
-          blogId
-          description
-          image
-          createdAt
-          updatedAt
-          __typename
-        }
-        post {
-          id
-          title
-          body
-          image
-          postId
-          profileId
-          createdAt
-          updatedAt
-          __typename
-        }
         createdAt
         updatedAt
         __typename

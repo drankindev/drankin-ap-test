@@ -3,9 +3,8 @@ import * as React from "react";
 import { Button, Grid, TextAreaField, Fieldset, CheckboxField, TextField, VisuallyHidden } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "../../ui-components/utils";
 import { generateClient } from "aws-amplify/api";
-import { uploadData, getUrl } from 'aws-amplify/storage';
 import ImageUploader from './ImageUploader'
-import { getPost, blogPostsByPostId } from "../../graphql/queries";
+import { getPost } from "../../graphql/queries";
 import { updatePost, createPost } from "../../graphql/mutations";
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import ReactQuill from 'react-quill';
@@ -23,6 +22,7 @@ export default function PostUpdateForm(props) {
     onChange,
     overrides,
     setEditor,
+    setStatus,
     username,
     blogList,
     ...rest
@@ -40,9 +40,8 @@ export default function PostUpdateForm(props) {
   const [image, setImage] = React.useState(initialValues.image);
   const [postId, setPostId] = React.useState(initialValues.postId);
   const [profileId, setProfileId] = React.useState(initialValues.profileId);
+  const [tags, setTags] = React.useState(initialValues.tags);
   const [imageFile, setImageFile] = React.useState({});
-  // const [checkedBlogs, setCheckedBlogs] = React.useState([]);
-  // const [blogPosts, setBlogPosts]  = React.useState([]);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = postRecord
@@ -53,7 +52,7 @@ export default function PostUpdateForm(props) {
     setImage(cleanValues.image);
     setPostId(cleanValues.postId);
     setProfileId(cleanValues.profileId);
-    //setBlogs(cleanValues.blogs);
+    setTags(cleanValues.tags);
     setErrors({});
   };
   const [postRecord, setPostRecord] = React.useState(postModelProp);
@@ -69,25 +68,6 @@ export default function PostUpdateForm(props) {
         : postModelProp;
       setPostRecord(record);
     };
-    // const fetchBlogPosts = async (idProp) => {
-    //   try {
-    //     const apiData = await client.graphql({ 
-    //       query: blogPostsByPostId,
-    //       variables: { postId: idProp }
-    //     });
-    //     const data = apiData.data.blogPostsByPostId.blogs;
-
-    //     let tmp = [];
-    //     data.map(blog => {
-    //       tmp.push(blog.id);
-    //     })
-    //     setCheckedBlogs(...tmp);
-    //     setBlogPosts(data);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
-    // fetchBlogPosts(idProp);
     queryData();
   }, [idProp, postModelProp]);
   React.useEffect(resetStateValues, [postRecord]);
@@ -97,6 +77,7 @@ export default function PostUpdateForm(props) {
     image: [],
     postId: [],
     profileId: [],
+    tags: []
   };
   const runValidationTasks = async (
     fieldName,
@@ -133,7 +114,8 @@ export default function PostUpdateForm(props) {
           body: body ?? null,
           image: image ?? null,
           postId: postId ?? null,
-          profileId: profileId ?? null
+          profileId: profileId ?? null,
+          tags: tags ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -184,11 +166,8 @@ export default function PostUpdateForm(props) {
               },
             });
           }
-          
-          if (onSuccess) {
-            onSuccess(modelFields);
-            setEditor(false);
-          }
+          setStatus('refresh'); 
+          setEditor(false);
         } catch (err) {
           if (onError) {
             const messages = err.errors.map((e) => e.message).join("\n");
@@ -220,67 +199,73 @@ export default function PostUpdateForm(props) {
         {...getOverrideProps(overrides, "title")}
       ></TextField>
 
-      <ImageUploader id={idProp}/>
+      <ImageUploader id={idProp} image={image} setImage={setImage}/>
 
+      {blogList &&
       <div className="amplify-flex amplify-field amplify-textfield">
-      <h4 className="amplify-label">Body</h4>
-      <ReactQuill 
-        theme="snow" 
-        value={body} 
-        onChange={setBody} />
+        <h4 className="amplify-label">Tags</h4>
+        {blogList.map(blog =>
+          <CheckboxField
+            key={blog.name}
+            value={blog.blogId}
+            label={blog.name}
+            checked={tags && tags.includes(blog.blogId)}
+            onChange={(e) => {
+              let {value} = e.target;
+              let newTags = [];
+              if (e.target.checked){  
+                newTags = tags ? [...tags, value] : [value];
+              }else{
+                newTags = tags && tags.filter(tag => tag != value);
+              }
+              setTags(newTags);
+            }}
+          />
+        )}
+      </div>
+      }
+      <div className="amplify-flex amplify-field amplify-textfield">
+        <h4 className="amplify-label">Body</h4>
+        <ReactQuill 
+          theme="snow" 
+          value={body} 
+          onChange={setBody} />
       </div>
       <VisuallyHidden>
-      <TextAreaField
-        label="Body"
-        isRequired={false}
-        isReadOnly={false}
-        value={body}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (errors.body?.hasError) {
-            runValidationTasks("body", value);
-          }
-          setBody(value);
-        }}
-        onBlur={() => runValidationTasks("body", body)}
-        errorMessage={errors.body?.errorMessage}
-        hasError={errors.body?.hasError}
-        {...getOverrideProps(overrides, "body")}
-      ></TextAreaField>
         <TextField
-        label="Post id"
-        isRequired={false}
-        isReadOnly={true}
-        value={postId}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (errors.postId?.hasError) {
-            runValidationTasks("postId", value);
-          }
-          setPostId(value);
-        }}
-        onBlur={() => runValidationTasks("postId", postId)}
-        errorMessage={errors.postId?.errorMessage}
-        hasError={errors.postId?.hasError}
-        {...getOverrideProps(overrides, "postId")}
-      ></TextField>
-      <TextField
-        label="Profile id"
-        isRequired={false}
-        isReadOnly={false}
-        value={profileId}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (errors.profileId?.hasError) {
-            runValidationTasks("profileId", value);
-          }
-          setProfileId(value);
-        }}
-        onBlur={() => runValidationTasks("profileId", profileId)}
-        errorMessage={errors.profileId?.errorMessage}
-        hasError={errors.profileId?.hasError}
-        {...getOverrideProps(overrides, "profileId")}
-      ></TextField>
+          label="Post id"
+          isRequired={false}
+          isReadOnly={true}
+          value={postId}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.postId?.hasError) {
+              runValidationTasks("postId", value);
+            }
+            setPostId(value);
+          }}
+          onBlur={() => runValidationTasks("postId", postId)}
+          errorMessage={errors.postId?.errorMessage}
+          hasError={errors.postId?.hasError}
+          {...getOverrideProps(overrides, "postId")}
+        ></TextField>
+        <TextField
+          label="Profile id"
+          isRequired={false}
+          isReadOnly={false}
+          value={profileId}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.profileId?.hasError) {
+              runValidationTasks("profileId", value);
+            }
+            setProfileId(value);
+          }}
+          onBlur={() => runValidationTasks("profileId", profileId)}
+          errorMessage={errors.profileId?.errorMessage}
+          hasError={errors.profileId?.hasError}
+          {...getOverrideProps(overrides, "profileId")}
+        ></TextField>
       </VisuallyHidden>
       <div className="clear-both w-full pt-6 text-center">
           <Button
