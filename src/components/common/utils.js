@@ -1,51 +1,131 @@
 import { generateClient } from "aws-amplify/api";
-import { listPosts, listBlogs, listBlogPosts } from '../../graphql/queries';
+import { listPosts, listBlogs } from '../../graphql/queries';
+import { getUrl, list } from 'aws-amplify/storage';
+import { Cache } from 'aws-amplify/utils';
+import dayjs from 'dayjs';
 
 const client = generateClient();
 
 export const fetchBlogList = async ({onSuccess}) => {
-    try {
+    // get blogs from cache
+    let BlogsFromCache = await Cache.getItem('blogs');
+    if (BlogsFromCache !== null && BlogsFromCache.length > 0) {
+      // return cached blogs
+      onSuccess(BlogsFromCache);
+    } else {
+      try {
+        // get blogs from api if not cached
         const apiData = await client.graphql({ query: listBlogs });
         const BlogsFromAPI = apiData.data.listBlogs.items ?? [];
+
+        // cache blogs for 1 week
+        const expiration = dayjs(new Date()).add(7, 'd');
+        Cache.setItem('blogs', BlogsFromAPI, { expires: expiration.valueOf() });
+        
+        // return api blogs
         onSuccess(BlogsFromAPI);
-    } catch (err) {
-        console.log(err);
+      } catch (err) {
+          console.log(err);
+      }
     }
 }
 
-export const fetchPostList = async ({onSuccess, filter}) => {
+export const fetchPostList = async ({onSuccess, status}) => {
+  // get posts from cache
+  console.log(status === 'refresh' && 'refreshing posts');
+  let PostsFromCache = await Cache.getItem('posts');
+  if (PostsFromCache !== null  && status !== 'refresh' && PostsFromCache.length > 0) {
+    // return cached posts
+    onSuccess(PostsFromCache);
+  } else {
     try {
       const apiData = await client.graphql({ 
         query: listPosts
       });
       const PostsFromAPI = apiData.data.listPosts.items;
+
+      // cache posts for 1 hour
+      const expiration = dayjs(new Date()).add(60, 'm');
+      Cache.setItem('posts', PostsFromAPI, { expires: expiration.valueOf() });
+      
+      // return posts from api
       onSuccess(PostsFromAPI);
     } catch (err) {
       console.log(err);
     }
+  }
 }
 
-export const fetchBlogPosts = async ({onSuccess, blogId}) => {
+export const fetchPost = async ({postId, onSuccess, status}) => {
+  // get post from cache
+  console.log(status === 'refresh' && 'refreshing post');
+  let PostFromCache = await Cache.getItem(postId);
+  if (PostFromCache !== null && status !== 'refresh') {
+    // return cached post
+    onSuccess(PostFromCache);
+  } else {
     try {
-        console.log(blogId)
-      const apiData = await client.graphql({
-        query: listBlogPosts,
-        variables: {
-          filter: {blogId: { eq: blogId}}
-        }
+      const apiData = await client.graphql({ 
+        query: getPost,
+        variables: { id: postId }
       });
-      const PostsFromAPI = apiData.data.listBlogPosts.items;
-      let posts = [];
-      PostsFromAPI.map((item) => {
-        posts.push(item.post);
-      })
-      console.log(PostsFromAPI);
-      onSuccess(posts);
+      const PostFromAPI = apiData.data.getPost;
+
+      // cache post for 1 dat
+      const expiration = dayjs(new Date()).add(1, 'd');
+      Cache.setItem(postId, PostFromAPI, { expires: expiration.valueOf() });
+
+      // return post from api
+      onSuccess(PostFromAPI);
     } catch (err) {
       console.log(err);
     }
   }
+}
 
+// export const fetchBlogPosts = async ({onSuccess, blogId}) => {
+//     try {
+//         console.log(blogId)
+//       const apiData = await client.graphql({
+//         query: listBlogPosts,
+//         variables: {
+//           filter: {blogId: { eq: blogId}}
+//         }
+//       });
+//       const PostsFromAPI = apiData.data.listBlogPosts.items;
+//       let posts = [];
+//       PostsFromAPI.map((item) => {
+//         posts.push(item.post);
+//         return true;
+//       })
+//       console.log(PostsFromAPI);
+//       onSuccess(posts);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   }
+
+export const validateImage = async ({onSuccess,filename}) => {
+  try {
+    const validUrl = await list({
+      prefix: filename
+    });
+    if (validUrl.items.length > 0) {
+      const res = await getUrl({
+        key: filename,
+        options: {
+          accessLevel: 'public',
+        }
+      });
+      if (onSuccess && res.url) {
+        onSuccess(res.url.toString());
+      }
+    }
+  } catch (err) {
+    console.log('error',err);
+  }
+}
+  
 export const getPost = /* GraphQL */ `
   query GetPost($id: ID!) {
     getPost(id: $id) {

@@ -54,7 +54,7 @@ const ImageUploader = ({id, image, setImage}) => {
         
         const ext = file.name.toLowerCase().substring(file.name.length - 4);
         const size = file.size;
-
+        const newFileName =  id ? id : 'tmp-'+ (Math.random() * 100000);
         if ( extCheck.includes(ext) !== true ) { 
           setError('Only .jpg or .png');
           return false;
@@ -65,8 +65,9 @@ const ImageUploader = ({id, image, setImage}) => {
         }
         setError('');
         try {
+
           const result = await uploadData({
-            key: file.name,
+            key: newFileName,
             data: file,
             options: {
               accessLevel: 'public'
@@ -74,8 +75,8 @@ const ImageUploader = ({id, image, setImage}) => {
           }).result;
           console.log('Succeeded: ', result);
           setStatus('upload');
-          setFilename(file.name);
-          setImage(file.name);
+          setFilename(newFileName);
+          setImage(newFileName);
         } catch (error) {
           console.log('Error : ', error);
         }

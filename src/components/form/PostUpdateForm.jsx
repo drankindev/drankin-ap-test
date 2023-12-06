@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as React from "react";
-import { Button, Grid, TextAreaField, Fieldset, CheckboxField, TextField, VisuallyHidden } from "@aws-amplify/ui-react";
+import { Button, Grid, CheckboxField, TextField, VisuallyHidden } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "../../ui-components/utils";
 import { generateClient } from "aws-amplify/api";
 import ImageUploader from './ImageUploader'
@@ -9,6 +9,7 @@ import { updatePost, createPost } from "../../graphql/mutations";
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Cache } from 'aws-amplify/utils';
 
 const client = generateClient();
 export default function PostUpdateForm(props) {
@@ -166,7 +167,7 @@ export default function PostUpdateForm(props) {
               },
             });
           }
-          
+          Cache.removeItem('posts');
           setStatus('refresh');
           setEditor(false);
 
