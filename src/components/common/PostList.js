@@ -9,7 +9,12 @@ const PostList = ({ posts, sortBy = 'createdAt' }) => {
   const [totalPages, setTotalPages] = React.useState(0);
   const perPage = 10;
 
+
   React.useEffect(() => {
+    setCurrentPageIndex(1);
+  },[posts,setCurrentPageIndex]);
+
+  React.useEffect(() => { 
     const start = (currentPageIndex -1) * perPage;
     const tmpPosts = posts.slice(start, start + perPage);
     const total = Math.ceil(posts.length/perPage)
@@ -27,7 +32,6 @@ const PostList = ({ posts, sortBy = 'createdAt' }) => {
   };
 
   const handleOnChange = (newPageIndex) => {
-    console.log(newPageIndex)
     setCurrentPageIndex(newPageIndex);
   };
 
