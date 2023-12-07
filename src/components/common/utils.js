@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 const client = generateClient();
 
 export const fetchBlogList = async ({onSuccess}) => {
+  Cache.removeItem('blogs')
     // get blogs from cache
     let BlogsFromCache = await Cache.getItem('blogs');
     if (BlogsFromCache !== null && BlogsFromCache.length > 0) {
@@ -44,8 +45,8 @@ export const fetchPostList = async ({onSuccess, status}) => {
       });
       const PostsFromAPI = apiData.data.listPosts.items;
 
-      // cache posts for 1 hour
-      const expiration = dayjs(new Date()).add(60, 'm');
+      // cache posts for 10 minutes
+      const expiration = dayjs(new Date()).add(10, 'm');
       Cache.setItem('posts', PostsFromAPI, { expires: expiration.valueOf() });
       
       // return posts from api
@@ -71,7 +72,7 @@ export const fetchPost = async ({postId, onSuccess, status}) => {
       });
       const PostFromAPI = apiData.data.getPost;
 
-      // cache post for 1 dat
+      // cache post for 1 day
       const expiration = dayjs(new Date()).add(1, 'd');
       Cache.setItem(postId, PostFromAPI, { expires: expiration.valueOf() });
 
@@ -82,28 +83,6 @@ export const fetchPost = async ({postId, onSuccess, status}) => {
     }
   }
 }
-
-// export const fetchBlogPosts = async ({onSuccess, blogId}) => {
-//     try {
-//         console.log(blogId)
-//       const apiData = await client.graphql({
-//         query: listBlogPosts,
-//         variables: {
-//           filter: {blogId: { eq: blogId}}
-//         }
-//       });
-//       const PostsFromAPI = apiData.data.listBlogPosts.items;
-//       let posts = [];
-//       PostsFromAPI.map((item) => {
-//         posts.push(item.post);
-//         return true;
-//       })
-//       console.log(PostsFromAPI);
-//       onSuccess(posts);
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
 
 export const validateImage = async ({onSuccess,filename}) => {
   try {

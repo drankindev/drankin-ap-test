@@ -11,6 +11,7 @@ import Post from './components/Post';
 import Profile from './components/Profile';
 import NotFound from './components/NotFound';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App({signOut, user}) {
   return (
@@ -18,18 +19,17 @@ function App({signOut, user}) {
     <View className="App">     
       <BrowserRouter>
         <Header signOut={signOut}/>
-        <div className="flex text-left pt-24 bg-blue-50 min-h-screen">
-
-        <Routes>
-            <Route path="/" element={<Navigate to="/posts" replace />} />
-            <Route path="/posts" element={<Posts user={user} />} />
-            <Route path="/posts/:blogId" element={<Posts user={user} />} />
-            <Route path="/post/:postId" element={<Post user={user}/>} />
-            <Route path="/profile" element={<Profile user={user}/>} />
-            <Route path="*" element={<NotFound />} />
-        </Routes>
-
+        <div className="flex text-left pt-20 pb-4 sm:pb-8 bg-white sm:bg-blue-50 min-h-screen">
+          <Routes>
+              <Route path="/" element={<Navigate to="/posts" replace />} />
+              <Route path="/posts" element={<Posts user={user} />} />
+              <Route path="/posts/:blogId" element={<Posts user={user} />} />
+              <Route path="/post/:postId" element={<Post user={user}/>} />
+              <Route path="/profile" element={<Profile user={user}/>} />
+              <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
+        <Footer />
       </BrowserRouter>      
     </View>
     </>

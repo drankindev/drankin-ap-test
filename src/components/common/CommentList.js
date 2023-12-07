@@ -4,24 +4,23 @@ import { deleteComment } from '../../graphql/mutations';
 import { generateClient } from "aws-amplify/api";
 
 const client = generateClient()
-
 const CommentList = ({ comments, user, onSuccess, sortBy = 'createdAt' }) => {
     
-    async function confirmDeleteComment(id){
-        try {
-            await client.graphql({
-                query: deleteComment,
-                variables: {
-                    input: {
-                        id: id
-                    }
+async function confirmDeleteComment(id){
+    try {
+        await client.graphql({
+            query: deleteComment,
+            variables: {
+                input: {
+                    id: id
                 }
-            });
-            onSuccess()
-        } catch (err) {
-            console.log(err);
-        }
+            }
+        });
+        onSuccess()
+    } catch (err) {
+        console.log(err);
     }
+}
 
   return (    
     <ul>         

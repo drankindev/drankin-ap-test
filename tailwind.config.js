@@ -5,7 +5,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      roboto: ['Roboto Mono'],
+      jost: ['Jost'],
       bebas: ['Bebas Neue'],
     },
     extend: {},

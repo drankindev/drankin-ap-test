@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { fetchBlogList, fetchPostList } from './common/utils';
-import { Cache } from 'aws-amplify/utils';
 import PostList from './common/PostList';
 import BlogList from './common/BlogList';
+import ToggleMenu from './common/ToggleMenu';
 import { useParams } from 'react-router-dom';
 import PostUpdateForm from './form/PostUpdateForm.jsx';
 import { TextField } from "@aws-amplify/ui-react";
-import { PencilIcon } from '@heroicons/react/24/outline';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -23,15 +23,18 @@ const Posts = ({user}) => {
     const [editor,setEditor] = useState(false);
     const [status, setStatus] = useState('idle');
 
+    // on init fetch blogs
     useEffect(() => {
       fetchBlogList({onSuccess: setBlogs});
     }, []);
 
+    // fetch posts on refresh
     useEffect(() => {
       fetchPostList({onSuccess: setPosts, status: status});
       setStatus('idle');
     }, [status]);
     
+    // set topic and reset filter when blog updates
     useEffect(() => {
       const findBlog = blogs.find(blog => blog.blogId === blogId);
       if( findBlog ){
@@ -43,6 +46,7 @@ const Posts = ({user}) => {
       setDate('');
     }, [blogId,blogs]);
 
+    // set filter when topic, keyword, or date change
     useEffect(() => {
       setFilter({
         blogId: topic.blogId,
@@ -51,8 +55,9 @@ const Posts = ({user}) => {
       })
     }, [topic,keyword,date]);
 
+    // filter posts when filter updates
     useEffect(() => {
-        let tmpPosts = posts;
+        let tmpPosts = posts.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1);
         // filter by blog
         tmpPosts = (filter.blogId === '') ? tmpPosts : tmpPosts.filter(post => post.tags !== null && post.tags.includes(filter.blogId));
         
@@ -70,20 +75,24 @@ const Posts = ({user}) => {
             return (postDate === isoDate);
           });
         }
-
         setFilteredPosts(tmpPosts);
     }, [filter, posts]);
+
+    // reset filter function
+    const resetFilter = () =>{
+      setKeyword('');
+      setDate('');
+    }
 
     return (
         <>
           {editor && <PostUpdateForm username={user.username} blogList={blogs} setEditor={setEditor} setStatus={setStatus}/> }
-          <section className="flex flex-auto gap-4 m-4">
-            <div className="z-10 w-60 text-center">
-              <nav className="rounded p-4 mb-4 bg-white drop-shadow text-left">
+          <section className="sm:flex flex-auto gap-4 sm:m-4">
+            <div className="z-10 w-full sm:w-60 text-center">
+              <ToggleMenu title="Topics">
                 <BlogList blogs={blogs} active={topic.blogId}/>
-              </nav>
-              <div className="rounded p-4 mb-4 bg-white drop-shadow text-left">
-                <h3 className="font-bebas text-lg text-red-700 font-bold w-full inline-block pb-1 mb-1 border-b border-b-black">Search</h3>
+              </ToggleMenu>  
+              <ToggleMenu title="search">
                 <TextField
                     label="Keyword"
                     value={keyword}
@@ -94,21 +103,23 @@ const Posts = ({user}) => {
                     }}
                 ></TextField>
 
-                <DatePicker 
-                  selected={date} 
-                  customInput={<TextField padding="10px 0 0 0" label="Date" size="small" value={date}/>}
-                  onChange={(e) => setDate(e)} />
-
-              </div>
+                <div className="w-full mb-2">
+                  <DatePicker 
+                    selected={date} 
+                    customInput={<TextField padding="10px 0 0 0" label="Date" size="small" value={date}/>}
+                    onChange={(e) => setDate(e)} />
+                </div>
+                {(keyword || date) && <button onClick={(e) => resetFilter()} className="text-right text-red-700 hover:text-black text-sm">Reset</button>}
+              </ToggleMenu>
             </div>            
-            <div className="z-0 relative rounded bg-white drop-shadow p-4 mx-auto max-w-4xl w-full">
-              <div className="flex gap-8 border-b border-b-black pb-3">
+            <div className="flex flex-col z-0 relative bg-white sm:rounded sm:drop-shadow p-4 h-auto mx-auto max-w-4xl w-full">
+              <div className="flex-none flex gap-8 border-b border-b-black pb-3">
                 <div className="flex-1">
                   <h1 className="font-bebas text-xl text-red-700 font-bold w-full inline-block">{topic.name}</h1>
                   <p className="">{topic.description}</p>
                 </div>
-                <div className="flex flex-none">
-                    <button className="rounded-full text-white w-8 h-8 p-1 bg-green-700 hover:bg-black" onClick={() => setEditor(true)} title="Create Post"><PencilIcon className="w-6 h-6"/></button>
+                <div className="flex flex-none fixed bottom-4 right-4 sm:static">
+                    <button className="rounded-full text-white w-8 h-8 p-1 bg-green-700 hover:bg-black" onClick={() => setEditor(true)} title="Create Post"><PlusIcon className="w-6 h-6"/></button>
                 </div>
               </div>
               <PostList posts={filteredPosts}/>

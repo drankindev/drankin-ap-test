@@ -50,6 +50,7 @@ export default function ProfileUpdateForm(props) {
                                 ...modelFields
                             })
                             setEditor(false);
+                            setStatus('refresh');
                         } catch (err) {
                             console.log(err)
                             if (onError) {

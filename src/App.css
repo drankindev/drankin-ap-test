@@ -14,3 +14,7 @@
 .amplify-field .ql-container{
   height: auto;
 }
+
+.react-datepicker-wrapper {
+  width: 100%;
+}

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { generateClient } from "aws-amplify/api";
 import { fetchBlogList, fetchPost, validateImage } from './common/utils';
 import PostUpdateForm from './form/PostUpdateForm.jsx';
 import ConfirmDeletePost from './form/ConfirmDeletePost.jsx';
@@ -8,8 +7,6 @@ import dayjs from 'dayjs';
 import { useParams } from 'react-router-dom';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import CommentList from './common/CommentList';
-
-const client = generateClient();
 
 const Post = ({user}) => {
   const { postId } = useParams();
@@ -36,14 +33,15 @@ const Post = ({user}) => {
     <>
       {editor && <PostUpdateForm id={post.id} blogList={blogs} setEditor={setEditor} setStatus={setStatus} />}
       {deleteConfirm && <ConfirmDeletePost post={post} setDeleteConfirm={setDeleteConfirm} />}
-
-      <section className="relative my-8 p-4 mx-auto w-full max-w-2xl rounded drop-shadow bg-white">
+      <section className="relative sm:my-8 p-4 mx-auto w-full max-w-2xl sm:rounded sm:drop-shadow bg-white">
         {post &&
           <>
             <div className="flex gap-8 mb-4 w-full border-b border-b-black pb-4">
               <div className="flex-1">
-                <h1 className="text-2xl font-roboto font-bold text-red-700 leading-6">{post.title}</h1>
-                <p className="text-xs mt-1"><i>{post.createdAt && dayjs(post.createdAt.substring(0, 10)).format('MM-DD-YYYY')}</i> &bull; {post.profileId}</p>
+                <h1 className="text-2xl font-jost font-bold text-red-700">{post.title}</h1>
+                <p className="text-xs mt-2">
+                  <i>{post.createdAt && dayjs(post.createdAt.substring(0, 10)).format('MM-DD-YYYY')}</i> &bull; <b>{post.profileId}</b>
+                </p>
               </div>
               { post.profileId === user.username &&
                 <div className="flex flex-none gap-2 relative">
@@ -58,7 +56,7 @@ const Post = ({user}) => {
             <div dangerouslySetInnerHTML={{ __html: post.body }} />  
             <div className="mt-8">      
                 <div>
-                  <h3 className="font-bebas text-base text-red-700 font-bold w-full inline-block">Comments</h3>
+                  <h3 className="font-bebas text-base text-red-700 font-bold w-full inline-block">{post.comments && post.comments.items.length > 0 ? 'Comments' :'No comments yet'}</h3>
                   <CommentCreateForm targetPost={post} user={user} onSuccess={(e) => setStatus('refresh')}/>
                   { post.comments && post.comments.items.length > 0 &&
                    <CommentList user={user} post={post} comments={post.comments.items} onSuccess={(e) => setStatus('refresh')}/>
