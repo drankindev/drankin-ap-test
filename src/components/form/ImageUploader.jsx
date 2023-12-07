@@ -66,14 +66,13 @@ const ImageUploader = ({id, image, setImage}) => {
         setError('');
         try {
 
-          const result = await uploadData({
+          await uploadData({
             key: newFileName,
             data: file,
             options: {
               accessLevel: 'public'
             }
-          }).result;
-          console.log('Succeeded: ', result);
+          });
           setStatus('upload');
           setFilename(newFileName);
           setImage(newFileName);

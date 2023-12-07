@@ -194,7 +194,7 @@ export default function CommentCreateForm(props) {
             type="reset"
             onClick={(event) => {
               event.preventDefault();
-              resetStateValues();
+              setToggle(false);
             }}
           ></Button>
           <Button

@@ -48,15 +48,15 @@ const Profile = ({user}) => {
     return (
         <>
             {editor && <ProfileUpdateForm user={user} userAttributes={userAttributes} setUserAttributes={setUserAttributes} setEditor={setEditor} setStatus={setStatus} setMessage={setMessage} />}
-            {message && <StatusDisplay setStatus={setStatus} setMessage={setMessage} message={message}/>}
+            {message && <StatusDisplay status={status} setStatus={setStatus} setMessage={setMessage} message={message}/>}
             <section className="relative z-0 sm:my-8 p-4 mx-auto w-full max-w-2xl sm:rounded sm:drop-shadow bg-white">
                 <div className="flex gap-8 mb-4 w-full border-b border-b-black pb-4">
-                    <h1 className="flex-1 font-bebas text-2xl font-bold text-orange-500">{user.username}</h1> 
+                    <h1  data-testid="cypress-h1" className="flex-1 font-bebas text-2xl font-bold text-orange-500">{user.username}</h1> 
                     <div className="flex flex-none">
                     <button className="rounded-full text-white w-8 h-8 p-1 bg-green-700 hover:bg-black" onClick={() => setEditor(true)} title="edit"><PencilIcon className="w-6 h-6"/></button>
                     </div>
                 </div>    
-                <p>
+                <p data-testid="cypress-body">
                     {imageUrl && <img className="rounded float-right w-1/2 h-auto mb-4 ml-4" src={imageUrl} alt={user.username}/>}
                     {userAttributes.profile}
                 </p>

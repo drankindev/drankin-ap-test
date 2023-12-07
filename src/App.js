@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import './App.css';
 import './tailwind.generated.css';
 import "@aws-amplify/ui-react/styles.css";
-
+import { Amplify } from 'aws-amplify';
 import { withAuthenticator, View } from "@aws-amplify/ui-react";
 import Posts from './components/Posts';
 import Post from './components/Post';
@@ -12,6 +12,9 @@ import Profile from './components/Profile';
 import NotFound from './components/NotFound';
 import Header from './components/Header';
 import Footer from './components/Footer';
+
+import awsExports from "./aws-exports";
+Amplify.configure(awsExports);
 
 function App({signOut, user}) {
   return (

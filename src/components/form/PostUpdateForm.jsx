@@ -210,21 +210,21 @@ export default function PostUpdateForm(props) {
 
       {blogList &&
       <div className="amplify-flex amplify-field amplify-textfield">
-        <h4 className="amplify-label">Tags</h4>
+        <h4 className="amplify-label">Topics</h4>
         <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5">
         {blogList.map(blog =>
           <CheckboxField
             key={blog.name}
-            value={blog.blogId}
+            id={blog.blogId}
             label={blog.name}
             checked={tags && tags.includes(blog.blogId)}
             onChange={(e) => {
-              let {value} = e.target;
+              let {id} = e.target;
               let newTags = [];
               if (e.target.checked){  
-                newTags = tags ? [...tags, value] : [value];
+                newTags = tags ? [...tags, id] : [id];
               }else{
-                newTags = tags && tags.filter(tag => tag != value);
+                newTags = tags && tags.filter(tag => tag != id);
               }
               setTags(newTags);
             }}
