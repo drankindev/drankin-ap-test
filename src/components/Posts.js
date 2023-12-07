@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchBlogList, fetchPostList } from './common/utils';
 import PostList from './common/PostList';
 import BlogList from './common/BlogList';
-import ToggleMenu from './common/ToggleMenu.js';
+import ToggleMenu from './common/ToggleMenu';
 import StatusDisplay from './common/StatusDisplay.js';
 import { useParams } from 'react-router-dom';
 import PostUpdateForm from './form/PostUpdateForm.jsx';
