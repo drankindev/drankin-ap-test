@@ -51,7 +51,7 @@ const Post = ({user}) => {
           <>
             <div className="flex gap-8 mb-4 w-full border-b border-b-black pb-4">
               <div className="flex-1">
-                <h1  data-testid="cypress-h1" className="postTitle text-2xl font-jost font-bold text-slate-800">{post.title}</h1>
+                <h1 className="postTitle text-2xl font-jost font-bold text-slate-800">{post.title}</h1>
                 <p className="text-xs mt-2">
                   <span className="postDate">{dayjs(post.createdAt).format('MM/DD/YYYY h:mm A')}</span> &bull; By <span className="postAuthor font-bold">{post.profileId}</span>
                 </p>
@@ -67,7 +67,7 @@ const Post = ({user}) => {
               <img className="postImage rounded float-right w-1/2 h-auto mb-4 ml-4" src={imageUrl} alt={post.title}/>
             }
             {post.body &&
-              <div data-testid="cypress-body" className="postBody" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.body) }} />  
+              <div className="postBody" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.body) }} />  
             }
             <div className="mt-8">      
                 <div>
