@@ -58,8 +58,8 @@ const Post = ({user}) => {
               </div>
               { post.profileId === user.username &&
                 <div className="flex flex-none gap-2 relative">
-                  <button className="rounded-full text-white w-8 h-8 p-1 bg-green-700 hover:bg-black" onClick={() => setEditor(true)} title="edit"><PencilIcon className="w-6 h-6"/></button>
-                  <button className="rounded-full text-white w-8 h-8 p-1 bg-red-700 hover:bg-black" onClick={() => setDeleteConfirm(true)} title="delete"><TrashIcon className="w-6 h-6"/></button>
+                  <button className="rounded-full text-white w-10 h-10 p-2 bg-green-700 hover:bg-black" onClick={() => setEditor(true)} title="edit"><PencilIcon className="w-6 h-6"/></button>
+                  <button className="rounded-full text-white w-10 h-10 p-2 bg-red-700 hover:bg-black" onClick={() => setDeleteConfirm(true)} title="delete"><TrashIcon className="w-6 h-6"/></button>
                 </div>
               }
             </div>

@@ -20,7 +20,7 @@ export const fetchBlogList = async ({onSuccess}) => {
         const BlogsFromAPI = apiData.data.listBlogs.items ?? [];
 
         // cache blogs for 1 week
-        const expiration = dayjs(new Date()).add(7, 'd');
+        const expiration = dayjs(new Date()).add(1, 'd');
         Cache.setItem('blogs', BlogsFromAPI, { expires: expiration.valueOf() });
         
         // return api blogs

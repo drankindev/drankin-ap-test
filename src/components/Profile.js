@@ -53,7 +53,7 @@ const Profile = ({user}) => {
                 <div className="flex gap-8 mb-4 w-full border-b border-b-black pb-4">
                     <h1 className="flex-1 font-bebas text-2xl font-bold text-orange-500">{user.username}</h1> 
                     <div className="flex flex-none">
-                    <button className="rounded-full text-white w-8 h-8 p-1 bg-green-700 hover:bg-black" onClick={() => setEditor(true)} title="edit"><PencilIcon className="w-6 h-6"/></button>
+                    <button className="rounded-full text-white w-10 h-10 p-2 bg-green-700 hover:bg-black" onClick={() => setEditor(true)} title="edit"><PencilIcon className="w-6 h-6"/></button>
                     </div>
                 </div>    
                 <p>

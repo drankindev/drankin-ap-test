@@ -118,11 +118,11 @@ const Posts = ({user}) => {
             <div className="flex flex-col z-0 relative bg-white sm:rounded sm:drop-shadow p-4 h-auto mx-auto max-w-4xl w-full">
               <div className="flex-none flex gap-8 border-b border-b-black pb-3">
                 <div className="flex-1">
-                  <h1 data-testid="cypress-h1" className="font-bebas text-xl text-orange-500 font-bold w-full inline-block">{topic.name}</h1>
+                  <h1 className="font-bebas text-xl text-orange-500 font-bold w-full inline-block">{topic.name}</h1>
                   <p className="">{topic.description}</p>
                 </div>
                 <div className="flex flex-none fixed bottom-4 right-4 sm:static">
-                    <button className="rounded-full text-white w-8 h-8 p-1 bg-green-700 hover:bg-black" onClick={() => setEditor(true)} title="Create Post"><PlusIcon className="w-6 h-6"/></button>
+                    <button className="rounded-full text-white w-10 h-10 p-2 bg-green-700 hover:bg-black" onClick={() => setEditor(true)} title="Create Post"><PlusIcon className="w-6 h-6"/></button>
                 </div>
               </div>
               <PostList posts={filteredPosts}/>
