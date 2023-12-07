@@ -34,7 +34,7 @@ export const fetchBlogList = async ({onSuccess}) => {
 export const fetchPostList = async ({onSuccess, status}) => {
   // get posts from cache
   let PostsFromCache = await Cache.getItem('posts');
-  if (PostsFromCache !== null  && status !== 'refresh' && PostsFromCache.length > 0) {
+  if (PostsFromCache !== null && status !== 'refresh' && PostsFromCache.length > 0) {
     // return cached posts
     onSuccess(PostsFromCache);
   } else {
@@ -70,8 +70,8 @@ export const fetchPost = async ({postId, onSuccess, status}) => {
       });
       const PostFromAPI = apiData.data.getPost;
 
-      // cache post for 1 day
-      const expiration = dayjs(new Date()).add(1, 'd');
+      // cache post for 10 minutes
+      const expiration = dayjs(new Date()).add(10, 'm');
       Cache.setItem(postId, PostFromAPI, { expires: expiration.valueOf() });
 
       // return post from api

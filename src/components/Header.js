@@ -9,7 +9,7 @@ const Header = ({ signOut }) => {
                 <div className="flex-1 text-left">          
                     <Link to="/" title="Home">
                         <span className="font-bebas text-white text-4xl">
-                        Bloggaboudit<span className="text-orange-500">!</span>
+                        Blogaboudit<span className="text-orange-500">!</span>
                         </span>
                     </Link>
                 </div>
