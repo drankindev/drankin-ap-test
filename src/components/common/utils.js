@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 const client = generateClient();
 
 export const fetchBlogList = async ({onSuccess}) => {
-  Cache.removeItem('blogs')
+
     // get blogs from cache
     let BlogsFromCache = await Cache.getItem('blogs');
     if (BlogsFromCache !== null && BlogsFromCache.length > 0) {
@@ -33,7 +33,6 @@ export const fetchBlogList = async ({onSuccess}) => {
 
 export const fetchPostList = async ({onSuccess, status}) => {
   // get posts from cache
-  console.log(status === 'refresh' && 'refreshing posts');
   let PostsFromCache = await Cache.getItem('posts');
   if (PostsFromCache !== null  && status !== 'refresh' && PostsFromCache.length > 0) {
     // return cached posts
@@ -59,7 +58,6 @@ export const fetchPostList = async ({onSuccess, status}) => {
 
 export const fetchPost = async ({postId, onSuccess, status}) => {
   // get post from cache
-  console.log(status === 'refresh' && 'refreshing post');
   let PostFromCache = await Cache.getItem(postId);
   if (PostFromCache !== null && status !== 'refresh') {
     // return cached post

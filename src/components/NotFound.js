@@ -3,9 +3,12 @@ import React from 'react';
 const NotFound = () => {
     return (
         <>
-            <h1 className="PageTitle w-full mb-4 text-violet-950 text-3xl font-normal font-['Playfair-Display']">404: Page not found</h1>
-            <p className="w-full mb-8 text-black text-base font-normal font-['Figtree'] leading-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>           
-        </>
+            <section className="relative sm:my-8 p-4 mx-auto w-full max-w-2xl sm:rounded sm:drop-shadow bg-white">
+                <div className="flex gap-8 mb-4 w-full border-b border-b-black pb-4">
+                    <h1 className="flex-1 font-bebas text-2xl font-roboto font-bold text-red-700">404: Page not found</h1> 
+                </div>
+            </section> 
+        </> 
     )
 }
 

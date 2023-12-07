@@ -11,6 +11,7 @@ import { fetchByPath, getOverrideProps, validateField } from "../../ui-component
 import { generateClient } from "aws-amplify/api";
 import { createComment } from "../../graphql/mutations";
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
+import DOMPurify from "dompurify";
 
 const client = generateClient();
 export default function CommentCreateForm(props) {
@@ -24,6 +25,8 @@ export default function CommentCreateForm(props) {
     overrides,
     user,
     targetPost,
+    setStatus,
+    setMessage,
     ...rest
   } = props;
   const initialValues = {
@@ -62,14 +65,14 @@ export default function CommentCreateForm(props) {
   };
   return (
     <div className="border-t border-t-black">
-      <button className="text-bold relative text-left w-full py-2 bg-white hover:bg-gray-100 border-b border-b-black" 
+      <button className="font-jost font-bold text-slate-500 relative text-left w-full py-2 bg-white hover:bg-slate-100 border-b border-b-black" 
         onClick={(e) => setToggle(!toggle)}
         >
         Post a comment
         {toggle ?
-          <ChevronUpIcon className="w-4 h-4 absolute right-0 top-3 text-gray-400"/>
+          <ChevronUpIcon className="w-4 h-4 absolute right-0 top-3 text-slate-500"/>
         :
-          <ChevronDownIcon className="w-4 h-4 absolute right-0 top-3 text-gray-400"/>
+          <ChevronDownIcon className="w-4 h-4 absolute right-0 top-3 text-slate-500"/>
         }
       </button>
       <div className={`transition-[height] overflow-hidden ${toggle ? 'h-52' : 'h-0'}`}>
@@ -108,8 +111,8 @@ export default function CommentCreateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value === "") {
-              modelFields[key] = null;
+            if (typeof value === "string") {
+              modelFields[key] = (value === "") ? null : DOMPurify.sanitize(value);
             }
           });
           const create = await client.graphql({
@@ -125,6 +128,10 @@ export default function CommentCreateForm(props) {
           if (onSuccess) {
             onSuccess(modelFields);
           }
+
+          setStatus('refresh');
+          setMessage('Comment posted');
+
           if (clearOnSuccess) {
             resetStateValues();
           }
@@ -189,7 +196,6 @@ export default function CommentCreateForm(props) {
               event.preventDefault();
               resetStateValues();
             }}
-            {...getOverrideProps(overrides, "ClearButton")}
           ></Button>
           <Button
             children="Submit"

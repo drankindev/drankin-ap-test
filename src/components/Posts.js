@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { fetchBlogList, fetchPostList } from './common/utils';
 import PostList from './common/PostList';
 import BlogList from './common/BlogList';
-import ToggleMenu from './common/ToggleMenu';
+import ToggleMenu from './common/ToggleMenu.js';
+import StatusDisplay from './common/StatusDisplay.js';
 import { useParams } from 'react-router-dom';
 import PostUpdateForm from './form/PostUpdateForm.jsx';
 import { TextField } from "@aws-amplify/ui-react";
@@ -22,6 +23,7 @@ const Posts = ({user}) => {
     const [date,setDate] = useState();
     const [editor,setEditor] = useState(false);
     const [status, setStatus] = useState('idle');
+    const [message, setMessage] = useState('');
 
     // on init fetch blogs
     useEffect(() => {
@@ -86,13 +88,14 @@ const Posts = ({user}) => {
 
     return (
         <>
-          {editor && <PostUpdateForm username={user.username} blogList={blogs} setEditor={setEditor} setStatus={setStatus}/> }
+          {editor && <PostUpdateForm username={user.username} blogList={blogs} setEditor={setEditor} setStatus={setStatus} setMessage={setMessage}/> }
+          {message && <StatusDisplay setStatus={setStatus} setMessage={setMessage} message={message}/>}
           <section className="sm:flex flex-auto gap-4 sm:m-4">
             <div className="z-10 w-full sm:w-60 text-center">
               <ToggleMenu title="Topics">
                 <BlogList blogs={blogs} active={topic.blogId}/>
               </ToggleMenu>  
-              <ToggleMenu title="search">
+              <ToggleMenu title="Search">
                 <TextField
                     label="Keyword"
                     value={keyword}
@@ -109,13 +112,13 @@ const Posts = ({user}) => {
                     customInput={<TextField padding="10px 0 0 0" label="Date" size="small" value={date}/>}
                     onChange={(e) => setDate(e)} />
                 </div>
-                {(keyword || date) && <button onClick={(e) => resetFilter()} className="text-right text-red-700 hover:text-black text-sm">Reset</button>}
+                {(keyword || date) && <button onClick={(e) => resetFilter()} className="text-right text-orage-500 hover:text-black text-sm">Reset</button>}
               </ToggleMenu>
             </div>            
             <div className="flex flex-col z-0 relative bg-white sm:rounded sm:drop-shadow p-4 h-auto mx-auto max-w-4xl w-full">
               <div className="flex-none flex gap-8 border-b border-b-black pb-3">
                 <div className="flex-1">
-                  <h1 className="font-bebas text-xl text-red-700 font-bold w-full inline-block">{topic.name}</h1>
+                  <h1 className="font-bebas text-xl text-orange-500 font-bold w-full inline-block">{topic.name}</h1>
                   <p className="">{topic.description}</p>
                 </div>
                 <div className="flex flex-none fixed bottom-4 right-4 sm:static">

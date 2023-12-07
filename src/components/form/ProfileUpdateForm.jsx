@@ -4,6 +4,7 @@ import { Button, Grid, TextAreaField } from "@aws-amplify/ui-react";
 import ImageUploader from './ImageUploader'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { updateUserAttributes } from 'aws-amplify/auth';
+import DOMPurify from "dompurify";
 
 export default function ProfileUpdateForm(props) {
     const {
@@ -16,6 +17,7 @@ export default function ProfileUpdateForm(props) {
         overrides,
         setEditor,
         setStatus,
+        setMessage,
         userAttributes,
         setUserAttributes,
         ...rest
@@ -25,8 +27,8 @@ export default function ProfileUpdateForm(props) {
     return (
         <div className="fixed w-full h-full z-50 bg-black bg-opacity-80 top-0 left-0 p-8 overflow-y-scroll">
             <div className=" relative w-full max-w-3xl mx-auto p-4 bg-white rounded" >
-                <h3 className="font-bebas text-lg text-red-700 font-bold w-full inline-block pb-1 mb-1 border-b border-b-black">Edit Profile</h3>
-                <button className="absolute right-2 top-2 block w-8 h-8 text-black hover:text-red-700 bg-white rounded-full" onClick={(e) => setEditor(false)}><XMarkIcon/></button>
+                <h3 className="font-bebas text-lg text-orange-500 font-bold w-full inline-block pb-1 mb-1 border-b border-b-black">Edit Profile</h3>
+                <button className="absolute right-2 top-2 block w-8 h-8 text-black hover:text-orage-500 bg-white rounded-full" onClick={(e) => setEditor(false)}><XMarkIcon/></button>
             
                 <Grid
                     as="form"
@@ -37,7 +39,7 @@ export default function ProfileUpdateForm(props) {
                         event.preventDefault();  
                         let modelFields = {
                             picture: image ?? null,
-                            profile: profile ?? null
+                            profile: DOMPurify.sanitize(profile) ?? null
                         };
                         try {
                             const attributes = await updateUserAttributes({
@@ -51,6 +53,7 @@ export default function ProfileUpdateForm(props) {
                             })
                             setEditor(false);
                             setStatus('refresh');
+                            setMessage('Profile Saved');
                         } catch (err) {
                             console.log(err)
                             if (onError) {

@@ -9,7 +9,7 @@ const BlogList = ({blogs, active}) => {
       <ul>
         {blogs.sort((a, b) => a.name > b.name ? 1 : -1).map((blog) =>          
           <li key={blog.name} className="list-none">
-            <Link className={`font-bold font-jost hover:text-red-700 ${active === blog.blogId ? 'text-red-700' : ''}`} to={'/posts/' + blog.blogId}>
+            <Link className={`font-bold font-jost text-slate-800 hover:text-orange-500 ${active === blog.blogId ? 'text-red-700' : ''}`} to={'/posts/' + blog.blogId}>
               {blog.name}
             </Link>
           </li>

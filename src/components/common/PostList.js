@@ -36,11 +36,13 @@ const PostList = ({ posts, sortBy = 'createdAt' }) => {
       <div className="flex flex-col flex-1">
         <ul className="flex-1">
           {paginatedPosts.map((post) => {
-            return(<li key={post.id} className="list-none py-1 border-b border-b-gray-300">
-                <Link className="font-bold font-jost hover:text-red-700" to={`/post/${post.id}`}>
+            return(<li key={post.id} className="list-none py-1 border-b border-b-slate-300">
+                <Link className="font-bold font-jost text-slate-800 hover:text-orange-500" to={`/post/${post.id}`}>
                 {post.title}
                 </Link>
-                <p className="text-xs mb-1"><i>{dayjs(post.createdAt).format('MM/DD/YYYY')}</i> &bull; <b>{post.profileId}</b></p>
+                <p className="text-xs mb-1 text-slate-600">
+                  <span className="postDate">{dayjs(post.createdAt).format('MM/DD/YYYY h:mm A')}</span> &bull; By <span className="postAuthor font-bold text-slate-700">{post.profileId}</span>
+                </p>
             </li>)
           })}
         </ul>

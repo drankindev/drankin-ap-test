@@ -10,6 +10,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Cache } from 'aws-amplify/utils';
+import DOMPurify from 'dompurify';
 
 const client = generateClient();
 export default function PostUpdateForm(props) {
@@ -24,6 +25,7 @@ export default function PostUpdateForm(props) {
     overrides,
     setEditor,
     setStatus,
+    setMessage,
     username,
     blogList,
     ...rest
@@ -101,8 +103,8 @@ export default function PostUpdateForm(props) {
   return (
     <div className="fixed w-full h-full z-50 bg-black bg-opacity-80 top-0 left-0 p-8 overflow-y-scroll">
       <div className=" relative w-full max-w-3xl mx-auto p-4 bg-white rounded" >
-        <h3 className="font-bebas text-lg text-red-700 font-bold w-full inline-block pb-1 mb-1 border-b border-b-black">{idProp ? 'Edit Post' : 'Create Post'}</h3>
-        <button className="absolute right-2 top-2 block w-8 h-8 text-black hover:text-red-700 bg-white rounded-full" onClick={(e) => setEditor(false)}><XMarkIcon/></button>
+        <h3 className="font-bebas text-lg text-orange-500 font-bold w-full inline-block pb-1 mb-1 border-b border-b-black">{idProp ? 'Edit Post' : 'Create Post'}</h3>
+        <button className="absolute right-2 top-2 block w-8 h-8 text-black hover:text-orange-500 bg-white rounded-full" onClick={(e) => setEditor(false)}><XMarkIcon/></button>
     <Grid
       as="form"
       rowGap="15px"
@@ -110,9 +112,10 @@ export default function PostUpdateForm(props) {
       padding="20px"
       onSubmit={async (event) => {
         event.preventDefault();
+        
         let modelFields = {
-          title,
-          body: body ?? null,
+          title: DOMPurify.sanitize(title, {ALLOWED_TAGS: ['']}),
+          body: DOMPurify.sanitize(body) ?? null,
           image: image ?? null,
           postId: postId ?? null,
           profileId: profileId ?? null,
@@ -169,6 +172,7 @@ export default function PostUpdateForm(props) {
           }
           Cache.removeItem('posts');
           setStatus('refresh');
+          setMessage('Post Saved')
           setEditor(false);
 
         } catch (err) {
@@ -207,6 +211,7 @@ export default function PostUpdateForm(props) {
       {blogList &&
       <div className="amplify-flex amplify-field amplify-textfield">
         <h4 className="amplify-label">Tags</h4>
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5">
         {blogList.map(blog =>
           <CheckboxField
             key={blog.name}
@@ -225,6 +230,7 @@ export default function PostUpdateForm(props) {
             }}
           />
         )}
+        </div>
       </div>
       }
       <div className="amplify-flex amplify-field amplify-textfield">
